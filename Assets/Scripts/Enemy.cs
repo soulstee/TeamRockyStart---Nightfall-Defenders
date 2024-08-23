@@ -14,25 +14,22 @@ public class Enemy : MonoBehaviour
 
     public float speed = 5f;
     public float health = 100f;
-    private Transform target;
+
+    private Vector2 target;
 
     private bool isDead = false;
     private bool inPool = false;
 
-    public void Initialize(TypeOfEnemy _type){
-        type = _type;
-
-        //Do changes and settings here
-
-        target = GameManager.instance.FindTarget(this.transform);
+    public void Initialize(Vector2 _target){
+        target = _target;
         Debug.Log(target);
     }
 
     private void Update(){
         //Move enemy toward target
 
-        if(target != null && transform.position.x != target.position.x)
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+        if(target != null && transform.position.x != target.x)
+            transform.position = Vector3.MoveTowards(transform.position, new Vector2(target.x, transform.position.y), speed * Time.deltaTime);
     }
 
     public void ResetEnemy(){

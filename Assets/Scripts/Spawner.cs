@@ -6,7 +6,6 @@ public class Spawner : MonoBehaviour
 {
     public Transform spawner;
 
-    [SerializeField] private float spawnYRange;
     [SerializeField] private float waveTime;
     [SerializeField] private int maxEnemyCount;
 
@@ -16,11 +15,15 @@ public class Spawner : MonoBehaviour
 
     private int currentEnemyCount = 0;
 
+    private GridManager2D gridManager;
+
     public GameObject[] enemyPrefab;
     private Enemy[] currentEnemies;
 
     private void Start(){
         currentEnemies = new Enemy[maxEnemyCount];
+
+        gridManager = GameManager.instance.gridManager;
 
         SpawnWave();
     }
@@ -35,10 +38,12 @@ public class Spawner : MonoBehaviour
             //Chooses random enemy id in prefab list
             int randomEnemyType = (int)Random.Range(0, enemyPrefab.Length);
 
-            GameObject enemySpawn = Instantiate(enemyPrefab[randomEnemyType], FindRandomSpawnPos(), Quaternion.identity);
+            Vector2 randPos = FindRandomSpawnPos();
+
+            GameObject enemySpawn = Instantiate(enemyPrefab[randomEnemyType], randPos, Quaternion.identity);
             //Match type with prefab (probably will be removed later)
             Enemy.TypeOfEnemy en = (Enemy.TypeOfEnemy)randomEnemyType;
-            enemySpawn.GetComponent<Enemy>().Initialize(en);
+            enemySpawn.GetComponent<Enemy>().Initialize(FindTarget(randPos));
             currentEnemies[currentEnemyCount] = enemySpawn.GetComponent<Enemy>();
 
             //Add to number after adding to array
@@ -59,18 +64,28 @@ public class Spawner : MonoBehaviour
 
     //Reset position and type and then reset and set their type
     private void SpawnPoolEnemy(Enemy selected){
-        selected.gameObject.transform.position = FindRandomSpawnPos();
+        Vector2 randPos = FindRandomSpawnPos();
+        selected.gameObject.transform.position = randPos;
 
         int randomEnemyType = (int)Random.Range(0, enemyPrefab.Length);
         Enemy.TypeOfEnemy en = (Enemy.TypeOfEnemy)randomEnemyType;
-        selected.Initialize(en);
+        selected.Initialize(FindTarget(randPos));
 
         selected.ResetEnemy();
     }
 
-    private Vector3 FindRandomSpawnPos(){
+    private Vector2 FindRandomSpawnPos(){
         //Chooses random position to spawn enemies (gives a less linear look to enemy pathing)
-        return new Vector3(spawner.transform.position.x, (float)Random.Range(spawner.transform.position.y-spawnYRange/2, spawner.transform.position.y+spawnYRange/2), spawner.transform.position.z);
+        float spawnOriginX = (int)spawner.position.x * gridManager.cellSize + gridManager.gridOrigin.x;
+        float randSpawnY = (int)(Random.Range(0,gridManager.gridHeight+1)/2) * gridManager.cellSize + gridManager.gridOrigin.y ;
+
+        return new Vector2(spawnOriginX, randSpawnY);
+    }
+
+    private Vector2 FindTarget(Vector2 _enemyPos){
+        float endOfGridX = (int)gridManager.gridWidth * gridManager.cellSize + gridManager.gridOrigin.x;
+
+        return new Vector2(endOfGridX, _enemyPos.y);
     }
 
     private float waveCurrentTime = 0;
@@ -104,12 +119,5 @@ public class Spawner : MonoBehaviour
 
             //End Wave function here
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        // Display the explosion radius when selected
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(spawner.position, spawnYRange/2);
     }
 }
