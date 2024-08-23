@@ -27,13 +27,13 @@ public class BrickPlacer2D : MonoBehaviour
         }
 
         // Place block on left mouse click
-        if (Input.GetMouseButtonDown(0))
-        {
-            PlaceBlock();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    PlaceBlock();
+        //}
     }
 
-    void PlaceBlock()
+    public void PlaceBlock()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);

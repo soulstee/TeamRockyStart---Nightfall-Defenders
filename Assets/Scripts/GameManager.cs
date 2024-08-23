@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public static bool waveEnded = true;
 
-    private void Start(){
+    private void Awake(){
         instance = this;
     }
 }

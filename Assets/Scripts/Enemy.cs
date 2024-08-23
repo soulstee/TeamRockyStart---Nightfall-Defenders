@@ -40,4 +40,8 @@ public class Enemy : MonoBehaviour
     public bool isInPool(){
         return inPool;
     }
+
+    public void TakeDamage(){
+        Debug.Log("Enemy took damage!");
+    }
 }

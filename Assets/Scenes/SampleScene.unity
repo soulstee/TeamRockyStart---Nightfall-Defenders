@@ -246,7 +246,7 @@ MonoBehaviour:
   spawner: {fileID: 819800303}
   waveTime: 60
   maxEnemyCount: 5
-  spawnInterval: 4
+  spawnInterval: 10
   enemyPrefab:
   - {fileID: 5548287821386657910, guid: 7271e8c8a42d99241a0e81b22fbe5cdf, type: 3}
 --- !u!4 &819800303
@@ -294,8 +294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 1926216897}
-  targets: []
-  laneDistanceTolerance: 1
 --- !u!4 &823715851
 Transform:
   m_ObjectHideFlags: 0
