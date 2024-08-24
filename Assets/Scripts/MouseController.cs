@@ -53,7 +53,9 @@ public class MouseController : MonoBehaviour
 
                     break;
                 case MouseMode.Build:
+
                     brickPlacer.PlaceBlock();
+
                     break;
             }
         }

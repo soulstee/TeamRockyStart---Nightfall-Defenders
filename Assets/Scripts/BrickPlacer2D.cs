@@ -37,10 +37,11 @@ public class BrickPlacer2D : MonoBehaviour
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
-        Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
+        Vector2 gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
 
         // Check if the position is within bounds and not occupied
-        if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
+        //if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
+        if(!gridManager.IsCellOccupied(gridCoords))
         {
             GameObject prefabToPlace = currentMode == PlacementMode.Brick ? brickPrefab : spikeBrickPrefab;
             Instantiate(prefabToPlace, gridPosition, Quaternion.identity);
