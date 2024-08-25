@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(GridManager2D))]
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
@@ -8,10 +9,28 @@ public class BrickPlacer2D : MonoBehaviour
     public GameObject occupiedCircle;
 
     [Header("References")]
-    public GridManager2D gridManager;         // Reference to GridManager2D
+    private GridManager2D gridManager;         // Reference to GridManager2D
 
     private enum PlacementMode { Brick, SpikeBrick }
     private PlacementMode currentMode = PlacementMode.Brick;
+
+    GameObject[,] gridOccupiedCircles = new GameObject[3,5];
+
+    private void Start(){
+        gridManager = GetComponent<GridManager2D>();
+        //Create occupation circle graphics
+
+        for(int x = 0; x < gridManager.gridWidth; x++){
+            for(int y = 0; y < gridManager.gridHeight; y++){
+                if(!gridManager.occupiedCells[x, y]){
+                    Vector2 gridPos = new Vector2(x,y);
+                    GameObject ocTemp = Instantiate(occupiedCircle, gridManager.GridToWorldPosition(gridPos), Quaternion.identity);
+                    ocTemp.SetActive(false);
+                    gridOccupiedCircles[x,y] = ocTemp;
+                }
+            }
+        }
+    }
 
     void Update()
     {
@@ -34,20 +53,27 @@ public class BrickPlacer2D : MonoBehaviour
         //}
     }
 
-    GameObject[] gridOccupiedCircles = new GameObject[15];
-
     public void CheckOpenPlacements(){
-        foreach(GameObject g in gridOccupiedCircles){
-            Destroy(g);
-        }
+        //Check if occupable circle is needed
 
-        for(int x = 0; x < gridManager.gridWidth; x++){
-            for(int y = 0; y < gridManager.gridHeight; y++){
-                if(!gridManager.occupiedCells[x, y]){
-                    Vector2 gridPos = new Vector2(x,y);
-                    Instantiate(occupiedCircle, gridManager.GridToWorldPosition(gridPos), Quaternion.identity);
+        if(MouseController.mouseMode == MouseController.MouseMode.Default){
+            for(int x = 0; x < gridManager.gridWidth; x++){
+                for(int y = 0; y < gridManager.gridHeight; y++){
+                    gridOccupiedCircles[x,y].SetActive(false);
                 }
             }
+        }else if(MouseController.mouseMode == MouseController.MouseMode.Build){
+            for(int x = 0; x < gridManager.gridWidth; x++){
+                for(int y = 0; y < gridManager.gridHeight; y++){
+                    if(!gridManager.occupiedCells[x, y]){
+                        gridOccupiedCircles[x,y].SetActive(true);
+                    }else{
+                        gridOccupiedCircles[x,y].SetActive(false);
+                    }
+                }
+            }
+        }else if(MouseController.mouseMode == MouseController.MouseMode.Upgrade){
+            //Put upgrade visual here
         }
     }
 

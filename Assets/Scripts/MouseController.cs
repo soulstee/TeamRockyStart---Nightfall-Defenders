@@ -7,9 +7,10 @@ public class MouseController : MonoBehaviour
     public enum MouseMode{
         Default,
         Build,
+        Upgrade,
     }
 
-    public MouseMode mouseMode;
+    public static MouseMode mouseMode;
 
     [Header("References")]
     public BrickPlacer2D brickPlacer;
@@ -25,9 +26,7 @@ public class MouseController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Tab)){
             mouseMode = mouseMode == MouseMode.Default ? MouseMode.Build : MouseMode.Default;
 
-            if(mouseMode == MouseMode.Build){
-                brickPlacer.CheckOpenPlacements();
-            }
+            brickPlacer.CheckOpenPlacements();
         }
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

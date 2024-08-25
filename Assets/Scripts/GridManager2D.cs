@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(BrickPlacer2D))]
 public class GridManager2D : MonoBehaviour
 {
     [Header("Grid Settings")]
@@ -13,11 +14,15 @@ public class GridManager2D : MonoBehaviour
     public bool showGrid = true;               // Toggle grid visibility
     public Color gridColor = Color.gray;       // Color of the grid lines
 
+    [Header("References")]
+    private BrickPlacer2D brickPlacer;
+
     [HideInInspector]
     public bool[,] occupiedCells;             // Tracks occupied cells
 
     void Start()
     {
+        brickPlacer = GetComponent<BrickPlacer2D>();
         InitializeGrid();
     }
 
@@ -108,8 +113,10 @@ public class GridManager2D : MonoBehaviour
     /// </summary>
     public void SetCellOccupied(Vector2Int gridCoords, bool occupied)
     {
-        if (IsWithinBounds(gridCoords))
+        if (IsWithinBounds(gridCoords)){
             occupiedCells[gridCoords.x, gridCoords.y] = occupied;
+            brickPlacer.CheckOpenPlacements();
+        }
     }
 
     void OnDrawGizmos()
