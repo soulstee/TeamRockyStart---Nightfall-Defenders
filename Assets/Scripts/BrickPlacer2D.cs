@@ -5,14 +5,10 @@ public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
     public GameObject brickPrefab;            // Regular Brick Prefab
-    public GameObject spikeBrickPrefab;       // Spike Brick Prefab
     public GameObject occupiedCircle;
 
     [Header("References")]
     private GridManager2D gridManager;         // Reference to GridManager2D
-
-    private enum PlacementMode { Brick, SpikeBrick }
-    private PlacementMode currentMode = PlacementMode.Brick;
 
     GameObject[,] gridOccupiedCircles = new GameObject[3,5];
 
@@ -39,13 +35,6 @@ public class BrickPlacer2D : MonoBehaviour
 
     void HandleInput()
     {
-        // Toggle between placement modes using Spacebar
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentMode = currentMode == PlacementMode.Brick ? PlacementMode.SpikeBrick : PlacementMode.Brick;
-            Debug.Log("Current Mode: " + currentMode.ToString());
-        }
-
         // Place block on left mouse click
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -86,8 +75,7 @@ public class BrickPlacer2D : MonoBehaviour
         // Check if the position is within bounds and not occupied
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            GameObject prefabToPlace = currentMode == PlacementMode.Brick ? brickPrefab : spikeBrickPrefab;
-            Instantiate(prefabToPlace, gridPosition, Quaternion.identity);
+            Instantiate(brickPrefab, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
         }
         else
