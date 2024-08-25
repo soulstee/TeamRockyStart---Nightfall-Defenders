@@ -24,6 +24,10 @@ public class MouseController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Tab)){
             mouseMode = mouseMode == MouseMode.Default ? MouseMode.Build : MouseMode.Default;
+
+            if(mouseMode == MouseMode.Build){
+                brickPlacer.CheckOpenPlacements();
+            }
         }
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

@@ -5,6 +5,7 @@ public class BrickPlacer2D : MonoBehaviour
     [Header("Prefab Settings")]
     public GameObject brickPrefab;            // Regular Brick Prefab
     public GameObject spikeBrickPrefab;       // Spike Brick Prefab
+    public GameObject occupiedCircle;
 
     [Header("References")]
     public GridManager2D gridManager;         // Reference to GridManager2D
@@ -33,15 +34,31 @@ public class BrickPlacer2D : MonoBehaviour
         //}
     }
 
+    GameObject[] gridOccupiedCircles = new GameObject[15];
+
+    public void CheckOpenPlacements(){
+        foreach(GameObject g in gridOccupiedCircles){
+            Destroy(g);
+        }
+
+        for(int x = 0; x < gridManager.gridWidth; x++){
+            for(int y = 0; y < gridManager.gridHeight; y++){
+                if(!gridManager.occupiedCells[x, y]){
+                    Vector2 gridPos = new Vector2(x,y);
+                    Instantiate(occupiedCircle, gridManager.GridToWorldPosition(gridPos), Quaternion.identity);
+                }
+            }
+        }
+    }
+
     public void PlaceBlock()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
-        Vector2 gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
+        Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
 
         // Check if the position is within bounds and not occupied
-        //if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
-        if(!gridManager.IsCellOccupied(gridCoords))
+        if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
             GameObject prefabToPlace = currentMode == PlacementMode.Brick ? brickPrefab : spikeBrickPrefab;
             Instantiate(prefabToPlace, gridPosition, Quaternion.identity);

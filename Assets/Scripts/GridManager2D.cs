@@ -4,8 +4,8 @@ public class GridManager2D : MonoBehaviour
 {
     [Header("Grid Settings")]
     public Vector2 gridOrigin = Vector2.zero;  // The starting position of the grid
-    public int gridWidth = 10;                 // Number of cells horizontally
-    public int gridHeight = 10;                // Number of cells vertically
+    public int gridWidth;                 // Number of cells horizontally
+    public int gridHeight;                // Number of cells vertically
     public float gridHeightOffset = 0.5f;
     public float cellSize = 1f;                // Size of each grid cell
 
@@ -13,9 +13,10 @@ public class GridManager2D : MonoBehaviour
     public bool showGrid = true;               // Toggle grid visibility
     public Color gridColor = Color.gray;       // Color of the grid lines
 
-    private bool[,] occupiedCells;             // Tracks occupied cells
+    [HideInInspector]
+    public bool[,] occupiedCells;             // Tracks occupied cells
 
-    void Awake()
+    void Start()
     {
         InitializeGrid();
     }
@@ -30,13 +31,20 @@ public class GridManager2D : MonoBehaviour
     /// </summary>
     public Vector2 GetNearestPointOnGrid(Vector2 position)
     {
-        float y = Mathf.Round((position.y - gridOrigin.y) / cellSize) * cellSize + gridOrigin.y;
+        float y = Mathf.Round((position.y - gridOrigin.y)) + gridOrigin.y;
 
         float gridAng = Mathf.Atan((gridHeightOffset/gridHeight));
         float triangleOffset = Mathf.Tan(gridAng);
 
-        float x = (int)(position.x - gridOrigin.x) / cellSize * cellSize + gridOrigin.x + gridHeightOffset - triangleOffset*y;
-        Debug.Log(x);
+        float x = 0;
+
+        for(int i = 0; i < gridWidth; i++){
+            x = i + gridOrigin.x + gridHeightOffset - triangleOffset*y;
+
+            if(Vector2.Distance(position, new Vector2(x,y)) < 0.6f){
+                return new Vector2(x, y);
+            }
+        }
 
         return new Vector2(x, y);
     }
@@ -44,14 +52,23 @@ public class GridManager2D : MonoBehaviour
     /// <summary>
     /// Converts a world position to grid coordinates.
     /// </summary>
-    public Vector2 WorldToGridCoordinates(Vector2 position)
+    public Vector2Int WorldToGridCoordinates(Vector2 position)
     {
         float gridAng = Mathf.Atan((gridHeightOffset/gridHeight));
         float triangleOffset = Mathf.Tan(gridAng);
 
+        float x = 0;
+
         float y = Mathf.Round((position.y - gridOrigin.y) / cellSize);
-        float x = ((position.x - gridOrigin.x) / cellSize)  + gridHeightOffset - (triangleOffset*y);
-        return new Vector2(x, y);
+        
+        for(int i = 0; i < gridWidth; i++){
+            x = i + gridOrigin.x + gridHeightOffset - triangleOffset*y;
+
+            if(Vector2.Distance(position, new Vector2(x,y)) < 0.3f){
+                return new Vector2Int(i, (int)y);
+            }
+        }
+        return Vector2Int.zero;
     }
 
     /// <summary>
@@ -70,29 +87,29 @@ public class GridManager2D : MonoBehaviour
     /// <summary>
     /// Checks if a cell is within grid bounds.
     /// </summary>
-    public bool IsWithinBounds(Vector2 gridCoords)
+    public bool IsWithinBounds(Vector2Int gridCoords)
     {
-        return gridCoords.x >= 0f && gridCoords.x * gridCoords.y < gridWidth && gridCoords.y >= 0f && gridCoords.y < gridHeight;
+        return gridCoords.x >= 0 && gridCoords.x < gridWidth && gridCoords.y >= 0 && gridCoords.y < gridHeight;
     }
 
     /// <summary>
     /// Checks if a grid cell is occupied.
     /// </summary>
-    public bool IsCellOccupied(Vector2 gridCoords)
+    public bool IsCellOccupied(Vector2Int gridCoords)
     {
         if (!IsWithinBounds(gridCoords))
             return true; // Consider out-of-bounds as occupied
 
-        return occupiedCells[(int)gridCoords.x, (int)gridCoords.y];
+        return occupiedCells[gridCoords.x, gridCoords.y];
     }
 
     /// <summary>
     /// Sets the occupation status of a grid cell.
     /// </summary>
-    public void SetCellOccupied(Vector2 gridCoords, bool occupied)
+    public void SetCellOccupied(Vector2Int gridCoords, bool occupied)
     {
         if (IsWithinBounds(gridCoords))
-            occupiedCells[(int)gridCoords.x, (int)gridCoords.y] = occupied;
+            occupiedCells[gridCoords.x, gridCoords.y] = occupied;
     }
 
     void OnDrawGizmos()
@@ -101,7 +118,7 @@ public class GridManager2D : MonoBehaviour
             return;
 
         Gizmos.color = gridColor;
-        for (int x = 0; x <= gridWidth; x++)
+        for (int x = 0; x <= gridWidth-1; x++)
         {
             Vector3 start = new Vector3(gridOrigin.x + x * cellSize + (gridHeightOffset), gridOrigin.y, 0f);
             Vector3 end = new Vector3(gridOrigin.x + x * cellSize, gridOrigin.y + gridHeight * cellSize, 0f);

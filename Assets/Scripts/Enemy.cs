@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
 
     public void Initialize(Vector2 _target){
         target = _target;
-        Debug.Log(target);
     }
 
     private void Update(){
