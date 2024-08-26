@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
 
     public static bool menuEnabled = false;
 
+    public GameObject[] confirmMenu;
+
     private void Update(){
         if(Input.GetKeyDown(KeyCode.Escape)){
             Continue();
@@ -16,6 +18,10 @@ public class PauseMenu : MonoBehaviour
 
     public void Quit(){
         Application.Quit();
+    }
+
+    public void Restart(){
+        
     }
 
     public void Continue(){
@@ -27,5 +33,9 @@ public class PauseMenu : MonoBehaviour
         }else{
             Time.timeScale = 1;
         }
+    }
+
+    public void Warning(int confirmID){
+        confirmMenu[confirmID].SetActive(true);
     }
 }

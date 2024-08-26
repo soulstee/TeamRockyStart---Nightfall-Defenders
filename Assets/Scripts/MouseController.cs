@@ -21,16 +21,14 @@ public class MouseController : MonoBehaviour
 
     bool mouseOverEnemy = false;
 
+    RaycastHit2D hit;
+
     private void HandleInput(){
 
-        if(Input.GetKeyDown(KeyCode.Tab)){
-            mouseMode = mouseMode == MouseMode.Default ? MouseMode.Build : MouseMode.Default;
-
-            brickPlacer.CheckOpenPlacements();
-        }
-
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector3.right);
+
+        if(mouseMode == MouseMode.Default)
+            hit = Physics2D.Raycast(mousePos, Vector3.right);
 
         mouseOverEnemy = false;
 
@@ -62,5 +60,15 @@ public class MouseController : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void ChangeToBuildMode(){
+        mouseMode = MouseMode.Build;
+        brickPlacer.CheckOpenPlacements();
+    }
+
+    private void ChangeToDefaultMode(){
+        mouseMode = MouseMode.Default;
+        brickPlacer.CheckOpenPlacements();
     }
 }

@@ -15,7 +15,8 @@ public class GridManager2D : MonoBehaviour
     public Color gridColor = Color.gray;       // Color of the grid lines
 
     [Header("References")]
-    private BrickPlacer2D brickPlacer;
+    [HideInInspector]
+    public BrickPlacer2D brickPlacer;
 
     [HideInInspector]
     public bool[,] occupiedCells;             // Tracks occupied cells

@@ -28,20 +28,6 @@ public class BrickPlacer2D : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        HandleInput();
-    }
-
-    void HandleInput()
-    {
-        // Place block on left mouse click
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    PlaceBlock();
-        //}
-    }
-
     public void CheckOpenPlacements(){
         //Check if occupable circle is needed
 
@@ -77,6 +63,7 @@ public class BrickPlacer2D : MonoBehaviour
         {
             Instantiate(brickPrefab, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
+            GameManager.instance.ChangeToDefaultMode();
         }
         else
         {

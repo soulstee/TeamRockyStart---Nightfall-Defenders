@@ -6,9 +6,6 @@ public class Spawner : MonoBehaviour
 {
     public Transform spawner;
 
-    [SerializeField] private float waveTime;
-    [SerializeField] private int maxEnemyCount;
-
     private float spawnTimeModifier;
 
     public float spawnInterval = 10f;
@@ -20,23 +17,22 @@ public class Spawner : MonoBehaviour
     public GameObject[] enemyPrefab;
     private Enemy[] currentEnemies;
 
+    private int[] enemiesToSpawn;
+
     private void Start(){
-        currentEnemies = new Enemy[maxEnemyCount];
-
         gridManager = GameManager.instance.gridManager;
-
-        SpawnWave();
     }
 
-    private void SpawnWave(){
-        GameManager.waveEnded = false;
+    public void SpawnWave(){
+        currentEnemies = new Enemy[GameManager.currentWave.totalEnemies];
+        enemiesToSpawn = GameManager.currentWave.enemiesID;
     }
 
     private void SpawnEnemy(){
-        if(currentEnemyCount < maxEnemyCount){
 
             //Chooses random enemy id in prefab list
-            int randomEnemyType = (int)Random.Range(0, enemyPrefab.Length);
+            int randomEnemyType = FindEnemyToSpawn();
+            enemiesToSpawn[randomEnemyType]--;
 
             Vector2 randPos = FindRandomSpawnPos();
 
@@ -48,30 +44,29 @@ public class Spawner : MonoBehaviour
 
             //Add to number after adding to array
             currentEnemyCount++;
-        }
-        else if(currentEnemyCount > maxEnemyCount){
-            //Object pooling - Teleport old enemy objects and change their type
-            //Doesn't induce lag on instantiate
+    }
 
-            for(int i = 0; i < currentEnemyCount; i++){
-                if(currentEnemies[i].isInPool()){
-                    //Find enemy in the pool
-                    SpawnPoolEnemy(currentEnemies[i]);
+    private int FindEnemyToSpawn(){
+        bool[] validSpawns = new bool[enemiesToSpawn.Length];
+
+        for(int i = 0; i < enemiesToSpawn.Length; i++){
+            if(enemiesToSpawn[i] > 0){
+                validSpawns[i] = true;
+            }else{
+                validSpawns[i] = false;
+            }
+        }
+
+        for(int i = 0; i < validSpawns.Length; i++){
+            if(validSpawns[i]){
+                int yn = (int)Random.Range(0,1);
+                if(yn == 0){
+                    return i;
                 }
             }
         }
-    }
 
-    //Reset position and type and then reset and set their type
-    private void SpawnPoolEnemy(Enemy selected){
-        Vector2 randPos = FindRandomSpawnPos();
-        selected.gameObject.transform.position = randPos;
-
-        int randomEnemyType = (int)Random.Range(0, enemyPrefab.Length);
-        Enemy.TypeOfEnemy en = (Enemy.TypeOfEnemy)randomEnemyType;
-        selected.Initialize(FindTarget(randPos));
-
-        selected.ResetEnemy();
+        return 0;
     }
 
     private Vector2 FindRandomSpawnPos(){
@@ -88,17 +83,15 @@ public class Spawner : MonoBehaviour
         return new Vector2(endOfGridX, _enemyPos.y);
     }
 
-    private float waveCurrentTime = 0;
     private float spawnIntervalTime = 0;
 
     void Update()
     {
         if(!GameManager.waveEnded){
-            waveCurrentTime += Time.deltaTime;
             spawnIntervalTime += Time.deltaTime;
 
             //Modifies spawn time slighty by time in wave (change later)
-            spawnTimeModifier = 1 + waveCurrentTime/500;
+            spawnTimeModifier = 1 + GameManager.waveCurrentTime/500;
         }
 
         //Spawns enemies at the spawnInterval variable
@@ -110,14 +103,12 @@ public class Spawner : MonoBehaviour
             SpawnEnemy();
         }
 
-        if(!GameManager.waveEnded && waveCurrentTime > waveTime && currentEnemyCount == 0){
-            GameManager.waveEnded = true;
+        if(!GameManager.waveEnded && GameManager.waveCurrentTime > GameManager.currentWave.waveTime && currentEnemyCount == 0){
 
-            waveCurrentTime = 0;
+            GameManager.instance.EndWave();
+
             spawnIntervalTime = 0;
             spawnTimeModifier = 0;
-
-            //End Wave function here
         }
     }
 }

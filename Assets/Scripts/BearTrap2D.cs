@@ -12,11 +12,8 @@ public class BearTrap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collision detected with: " + other.name); // Log the name of the object that collided
-
         if (other.CompareTag("Enemy") && !isActivated && !isRecharging)
         {
-            Debug.Log("Bear Trap activated on " + other.name);
             StartCoroutine(TrapEnemy(other.GetComponent<Enemy>()));
         }
     }
