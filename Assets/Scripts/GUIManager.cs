@@ -17,6 +17,7 @@ public class GUIManager : MonoBehaviour
     public BuildSlot[] buildButtons;
 
     [Header("UI stuff")]
+    public TextMeshProUGUI pointsText;
     public TextMeshProUGUI waveText;
     public GameObject startWaveButton;
     public Image towerHealthBar;
@@ -35,6 +36,10 @@ public class GUIManager : MonoBehaviour
         if(towerHealthBar.fillAmount <= 0){
             GameManager.instance.EndGame();
         }
+    }
+
+    public void UpdatePointsText(int points){
+        pointsText.text = GameManager.playerPoints.ToString();
     }
 }
 

@@ -22,9 +22,7 @@ public class GameManager : MonoBehaviour
 
     public static float waveCurrentTime = 0;
 
-    public UIManager uiManager; // Add this line
-
-    private int playerPoints = 0;
+    public static int playerPoints = 0;
 
     private void Awake()
     {
@@ -40,6 +38,10 @@ public class GameManager : MonoBehaviour
         if(!waveEnded){
             GameManager.waveCurrentTime += Time.deltaTime;
         }
+    }
+
+    public static void UpdatePoints(int points){
+        playerPoints += points;
     }
 
     public void StartWave(){
@@ -79,13 +81,6 @@ public class GameManager : MonoBehaviour
         brickPlacer.CheckOpenPlacements();
     }
 
-    public void AddPoints(int points)
-    {
-        playerPoints += points;
-        Debug.Log("Points Added! Current Points: " + playerPoints);
-        uiManager.UpdatePointsText(playerPoints); // Update UI here
-    }
-
     public int GetPoints()
     {
         return playerPoints;
@@ -96,12 +91,7 @@ public class GameManager : MonoBehaviour
         if (playerPoints >= amount)
         {
             playerPoints -= amount;
-            Debug.Log("Points Spent! Current Points: " + playerPoints);
-            uiManager.UpdatePointsText(playerPoints); // Update UI here
-        }
-        else
-        {
-            Debug.Log("Not enough points!");
+            gui.UpdatePointsText(playerPoints); // Update UI here
         }
     }
 }

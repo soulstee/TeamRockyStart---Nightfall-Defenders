@@ -4,13 +4,15 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject brickPrefab;            // Regular Brick Prefab
+    public GameObject brickPrefab;
     public GameObject occupiedCircle;
 
     [Header("References")]
     private GridManager2D gridManager;         // Reference to GridManager2D
 
     GameObject[,] gridOccupiedCircles = new GameObject[3,5];
+
+    public static GameObject buildSelected;
 
     private void Start(){
         gridManager = GetComponent<GridManager2D>();
@@ -63,6 +65,7 @@ public class BrickPlacer2D : MonoBehaviour
         {
             Instantiate(brickPrefab, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
+
             GameManager.instance.ChangeToDefaultMode();
         }
         else
