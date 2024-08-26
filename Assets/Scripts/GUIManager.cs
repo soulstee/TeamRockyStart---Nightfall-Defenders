@@ -38,7 +38,7 @@ public class GUIManager : MonoBehaviour
         }
     }
 
-    public void UpdatePointsText(int points){
+    public void UpdatePointsText(){
         pointsText.text = GameManager.playerPoints.ToString();
     }
 }

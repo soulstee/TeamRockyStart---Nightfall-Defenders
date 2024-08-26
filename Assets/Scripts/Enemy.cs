@@ -17,7 +17,6 @@ public class Enemy : MonoBehaviour
     private float originalSpeed;
     private Vector2 target;
     private bool isDead = false;
-    private bool inPool = false;
 
     private void Start()
     {
@@ -36,17 +35,6 @@ public class Enemy : MonoBehaviour
         target = _target;
     }
 
-    public void ResetEnemy()
-    {
-        isDead = false;
-        inPool = false;
-    }
-
-    public bool isInPool()
-    {
-        return inPool;
-    }
-
     public void TakeDamage(float damage)
     {
         Debug.Log("Enemy took damage!");
@@ -54,8 +42,13 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
-            // Handle enemy death
+            Die();
         }
+    }
+
+    private void Die(){
+        GameManager.instance.UpdatePoints(10);
+        Destroy(this.gameObject);
     }
 
     public void SetSpeed(float newSpeed)

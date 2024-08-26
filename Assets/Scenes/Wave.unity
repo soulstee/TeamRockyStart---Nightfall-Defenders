@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 55214781}
   - component: {fileID: 55214782}
   - component: {fileID: 55214784}
+  - component: {fileID: 55214785}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -341,6 +342,7 @@ MonoBehaviour:
   - button: {fileID: 1024939274}
     priceText: {fileID: 750104069}
     cost: 200
+  pointsText: {fileID: 0}
   waveText: {fileID: 327020132}
   startWaveButton: {fileID: 2126861536}
   towerHealthBar: {fileID: 930791093}
@@ -373,6 +375,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brickPlacer: {fileID: 247654431}
+--- !u!114 &55214785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55214780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde9905efb6721e43b039236f59877a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPrefab: {fileID: 8222477570085308395, guid: 301d8f13626632b42b8d81599c1511b3, type: 3}
 --- !u!1 &55239757
 GameObject:
   m_ObjectHideFlags: 0
@@ -3513,7 +3528,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: $1,000
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3799,6 +3814,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930791091}
   m_CullTransparentMesh: 1
+--- !u!1 &939396279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 939396281}
+  - component: {fileID: 939396280}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &939396280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939396279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8440eb26bebd3324286539ece301c64a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 11400000, guid: da5c63300a3c18d4fae4661106a1dd12, type: 2}
+  firePoint: {fileID: 939396281}
+--- !u!4 &939396281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939396279}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.4, y: 7.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1016620806
 GameObject:
   m_ObjectHideFlags: 0
@@ -7211,3 +7272,4 @@ SceneRoots:
   - {fileID: 1234987805}
   - {fileID: 377093526}
   - {fileID: 2135545389}
+  - {fileID: 939396281}
