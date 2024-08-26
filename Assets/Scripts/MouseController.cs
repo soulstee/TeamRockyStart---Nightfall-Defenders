@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
-    public enum MouseMode{
+    public enum MouseMode
+    {
         Default,
         Build,
         Upgrade,
@@ -15,50 +16,57 @@ public class MouseController : MonoBehaviour
     [Header("References")]
     public BrickPlacer2D brickPlacer;
 
-    private void Update(){
+    private void Update()
+    {
         HandleInput();
     }
 
-    bool mouseOverEnemy = false;
-
-    private void HandleInput(){
-
-        if(Input.GetKeyDown(KeyCode.Tab)){
+    private void HandleInput()
+    {
+        // Switch between Default and Build modes with Tab key
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
             mouseMode = mouseMode == MouseMode.Default ? MouseMode.Build : MouseMode.Default;
-
             brickPlacer.CheckOpenPlacements();
         }
 
+        // Get the mouse position in the world space
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector3.right);
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);  // Use Vector2.zero for ray direction to avoid issues
 
-        mouseOverEnemy = false;
+        // Reset mouseOverEnemy flag
+        bool mouseOverEnemy = false;
 
-        if(hit.collider != null && hit.collider.gameObject.CompareTag("Enemy")){
+        // Check if the mouse is over an enemy
+        Enemy enemy = null;
+        if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
+        {
             mouseOverEnemy = true;
-            
-            //Change cursor type to sprite that indicates ability to attack enemy
+            enemy = hit.collider.GetComponent<Enemy>();
+
+            // Change cursor type to indicate the ability to attack the enemy (if needed)
         }
 
-        //Functionality during default & build mode
-
-        if(Input.GetMouseButtonDown(0)){
-            switch(mouseMode){
+        // Handle mouse click based on the current mode
+        if (Input.GetMouseButtonDown(0))
+        {
+            switch (mouseMode)
+            {
                 case MouseMode.Default:
-
-                    if(mouseOverEnemy){
-
-                        //Fire weapon here
-
-                        Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
-                        enemy.TakeDamage();
+                    if (enemy != null)
+                    {
+                        // Fire weapon here and deal damage to the enemy
+                        float damageAmount = 10f; // Example damage amount
+                        enemy.TakeDamage(damageAmount);
                     }
-
                     break;
+
                 case MouseMode.Build:
-
                     brickPlacer.PlaceBlock();
+                    break;
 
+                case MouseMode.Upgrade:
+                    // Implement upgrade functionality here if needed
                     break;
             }
         }
