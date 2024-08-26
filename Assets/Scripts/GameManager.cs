@@ -22,7 +22,12 @@ public class GameManager : MonoBehaviour
 
     public static float waveCurrentTime = 0;
 
-    private void Awake(){
+    public UIManager uiManager; // Add this line
+
+    private int playerPoints = 0;
+
+    private void Awake()
+    {
         instance = this;
         gui = GetComponent<GUIManager>();
     }
@@ -72,5 +77,31 @@ public class GameManager : MonoBehaviour
     public void ChangeToDefaultMode(){
         MouseController.mouseMode = MouseController.MouseMode.Default;
         brickPlacer.CheckOpenPlacements();
+    }
+
+    public void AddPoints(int points)
+    {
+        playerPoints += points;
+        Debug.Log("Points Added! Current Points: " + playerPoints);
+        uiManager.UpdatePointsText(playerPoints); // Update UI here
+    }
+
+    public int GetPoints()
+    {
+        return playerPoints;
+    }
+
+    public void SpendPoints(int amount)
+    {
+        if (playerPoints >= amount)
+        {
+            playerPoints -= amount;
+            Debug.Log("Points Spent! Current Points: " + playerPoints);
+            uiManager.UpdatePointsText(playerPoints); // Update UI here
+        }
+        else
+        {
+            Debug.Log("Not enough points!");
+        }
     }
 }

@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173367b83bc90a144a444a2794873c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trapDamage: 10
   trapDuration: 10
-  damage: 10
   rechargeTime: 3
 --- !u!61 &2065066816784317576
 BoxCollider2D:
