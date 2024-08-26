@@ -1,4 +1,4 @@
-using UnityEngine;
+using UnityEngine; // Include this line to access Unity classes
 
 public class Enemy : MonoBehaviour
 {
@@ -14,58 +14,57 @@ public class Enemy : MonoBehaviour
     public float speed = 5f;
     public float health = 100f;
 
-    public int pointsValue = 10;  // Points awarded when this enemy is killed
-
+    private float originalSpeed;
     private Vector2 target;
     private bool isDead = false;
     private bool inPool = false;
 
-    public void Initialize(Vector2 _target)
+    private void Start()
     {
-        target = _target;
+        originalSpeed = speed; // Save the original speed value
     }
 
     private void Update()
     {
         // Move enemy toward target
         if (target != null && transform.position.x != target.x)
-        {
             transform.position = Vector3.MoveTowards(transform.position, new Vector2(target.x, transform.position.y), speed * Time.deltaTime);
-        }
     }
 
-    // Call this method when the enemy takes damage
-    public void TakeDamage(float damage)
+    public void Initialize(Vector2 _target)
     {
-        health -= damage;
-
-        if (health <= 0 && !isDead)
-        {
-            Die();
-        }
-    }
-
-    // Handle enemy death
-    private void Die()
-    {
-        isDead = true;
-
-        // Award points to the player
-        GameManager.instance.AddPoints(pointsValue);
-
-        // Optionally, destroy the enemy or handle pooling
-        Destroy(gameObject);
+        target = _target;
     }
 
     public void ResetEnemy()
     {
         isDead = false;
         inPool = false;
-        health = 100f;  // Reset health or set it dynamically as needed
     }
 
     public bool isInPool()
     {
         return inPool;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("Enemy took damage!");
+        health -= damage;
+        if (health <= 0)
+        {
+            isDead = true;
+            // Handle enemy death
+        }
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
     }
 }
