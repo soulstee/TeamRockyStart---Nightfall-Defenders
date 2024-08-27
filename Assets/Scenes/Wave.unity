@@ -2416,7 +2416,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.0038594902, y: 0.013494134}
@@ -2441,7 +2441,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 404668374}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8360a37c60adf1e468adb50fa9f28982, type: 3}
+  m_Script: {fileID: 11500000, guid: 33424cd04a1944c458b9123850fbd9f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
@@ -2486,7 +2486,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 03aeb4aa526ccf64e95bd498ea39764a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c74e12f5d7025aa4286e09da964cca23, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7384,8 +7384,4 @@ SceneRoots:
   - {fileID: 1234987805}
   - {fileID: 377093526}
   - {fileID: 2135545389}
-<<<<<<< HEAD
   - {fileID: 404668378}
-=======
-  - {fileID: 939396281}
->>>>>>> parent of 64f01d8 (Merge branch 'main' of https://github.com/soulstee/TeamRockyStart---Nightfall-Defenders)
