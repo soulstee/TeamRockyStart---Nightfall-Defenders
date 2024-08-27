@@ -1,0 +1,40 @@
+Enemy Types = 
+Zombies 
+Ghosts 
+Werewolves
+
+Enemy Targets =
+Walls
+Tower
+
+Enemy Goal - 
+To destroy anything in its path to get to the tower once its healthbar is full depleted (GameOver). 
+Walls also have a healthbar and set at different amounts at each level. But once destroyed you will have to purchase it again to defend base. (Only 1 set of walls can be placed in game)
+
+Enemies Spawn Time/Amount/Location =
+All Enemies spawn in the night time which is when the waves starts.
+Zombies - High
+Ghosts - Medium
+Werewolves - Low
+All Enemies spawn offscreen first which they will be set at a randomized set amount of lanes that way the game does not become repetitive and predictive.
+
+Enemy Statistics =
+Zombies - Standard enemy with medium movement speed, medium health, medium damage
+Ghosts - Fast Movement speed, with low health, low attack damage
+Werewolves - Slow Movement Speed, High Health, High Damage
+
+Enemy Unique Abilities =
+Zombies - Basic Standard Melee Attacks
+Ghosts - Can easily bypass any traps, and walls at all costs and levels. Ghost are only intangible for traps and walls ONLY! Tangible else though. 
+Once Ghosts reached at the tower it launches basic melee attacks.
+Werewolves - Enables the ability to do ranged attacks to whatever is in close contact first either walls or tower. 
+The ranged attack of the werewolve would be blowing wind (Like in the story "Three Little Pigs")
+The ranged attack is within 2 - 4 tiles away from target. (Yet to be determined can't be too close or too far from target in order to make it balanced)
+(Ranged attack only affects in a single lane that the werewolve is positioned in)
+
+Enemies Wave Progression - (This can be readjusted/balanced at any point)
+Game is set to have set amount of Waves which is 1 - 10.
+Waves 1-3 Easy
+Waves 4-5 Normal
+Waves 6-7 Easy
+Waves 8-10 Hard
