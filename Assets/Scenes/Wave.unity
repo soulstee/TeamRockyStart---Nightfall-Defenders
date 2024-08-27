@@ -342,7 +342,7 @@ MonoBehaviour:
   - button: {fileID: 1024939274}
     priceText: {fileID: 750104069}
     cost: 200
-  pointsText: {fileID: 0}
+  pointsText: {fileID: 866761739}
   waveText: {fileID: 327020132}
   startWaveButton: {fileID: 2126861536}
   towerHealthBar: {fileID: 930791093}
