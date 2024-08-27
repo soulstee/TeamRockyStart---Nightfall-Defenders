@@ -8,7 +8,7 @@ public class BrickPlacer2D : MonoBehaviour
     public GameObject occupiedCircle;
 
     [Header("References")]
-    private GridManager2D gridManager;
+    private GridManager2D gridManager;         // Reference to GridManager2D
 
     GameObject[,] gridOccupiedCircles = new GameObject[3,5];
 
@@ -65,7 +65,7 @@ public class BrickPlacer2D : MonoBehaviour
         {
             Instantiate(brickPrefab, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
-            AudioManager.instance.PlayNoise("BlockPlace");
+
             GameManager.instance.ChangeToDefaultMode();
         }
         else

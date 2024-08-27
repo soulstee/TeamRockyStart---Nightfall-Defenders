@@ -10,14 +10,9 @@ public class MainMenu : MonoBehaviour
     public string waveScene;
 
     public GameObject loadingScreen;
-    public GameObject mainMenu;
 
     public TextMeshProUGUI loadingText;
     public Image progressBar;
-
-    private void Start(){
-        AudioManager.instance.PlayNoise("Menu");
-    }
 
     public void Quit(){
         Application.Quit();
@@ -31,7 +26,6 @@ public class MainMenu : MonoBehaviour
     private IEnumerator LoadSceneAsync(string sceneName)
     {
         loadingScreen.SetActive(true);
-        mainMenu.SetActive(false);
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
         operation.allowSceneActivation = false;

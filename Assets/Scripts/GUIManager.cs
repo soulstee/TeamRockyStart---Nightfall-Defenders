@@ -52,8 +52,12 @@ public class GUIManager : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     public void UpdatePointsText(){
+=======
+    public void UpdatePointsText(int points){
+>>>>>>> parent of 590a628 (Bow Update)
         pointsText.text = GameManager.playerPoints.ToString();
 =======
     // Update the points text display
