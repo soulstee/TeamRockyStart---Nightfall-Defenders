@@ -341,10 +341,6 @@ MonoBehaviour:
   - button: {fileID: 1024939274}
     priceText: {fileID: 750104069}
     cost: 200
-<<<<<<< HEAD
-  pointsText: {fileID: 866761739}
-=======
->>>>>>> parent of 590a628 (Bow Update)
   waveText: {fileID: 327020132}
   startWaveButton: {fileID: 2126861536}
   towerHealthBar: {fileID: 930791093}
@@ -7215,16 +7211,7 @@ SceneRoots:
   - {fileID: 1234987805}
   - {fileID: 377093526}
   - {fileID: 2135545389}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
   - {fileID: 939396281}
-=======
   - {fileID: 1963170920}
   - {fileID: 902379054}
->>>>>>> Stashed changes
-=======
->>>>>>> parent of 590a628 (Bow Update)
-=======
   - {fileID: 939396281}
->>>>>>> parent of 94bc744 (Tower Health, Test Character, and Bow/Crossbow Attack & Animations are up)

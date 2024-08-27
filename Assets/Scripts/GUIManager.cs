@@ -37,16 +37,7 @@ public class GUIManager : MonoBehaviour
             GameManager.instance.EndGame();
         }
     }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
->>>>>>> parent of 94bc744 (Tower Health, Test Character, and Bow/Crossbow Attack & Animations are up)
-    public void UpdatePointsText(){
-=======
     public void UpdatePointsText(int points){
->>>>>>> parent of 590a628 (Bow Update)
         pointsText.text = GameManager.playerPoints.ToString();
     }
 }
