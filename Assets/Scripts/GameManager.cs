@@ -40,8 +40,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void UpdatePoints(int points){
+    public void UpdatePoints(int points){
         playerPoints += points;
+        gui.UpdatePointsText();
     }
 
     public void StartWave(){
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour
         if (playerPoints >= amount)
         {
             playerPoints -= amount;
-            gui.UpdatePointsText(playerPoints); // Update UI here
+            gui.UpdatePointsText(); // Update UI here
         }
     }
 }

@@ -19,8 +19,16 @@ public class Enemy : MonoBehaviour
     private float originalSpeed;
     private Vector2 target;
     private bool isDead = false;
+<<<<<<< HEAD
     
     private Transform targetTower; // Reference to the tower
+=======
+<<<<<<< Updated upstream
+=======
+    private bool inPool = false;
+    private Transform targetTower; // Reference to the tower
+>>>>>>> Stashed changes
+>>>>>>> parent of 741a4e3 (Bow Change)
 
     private void Start()
     {
@@ -39,6 +47,23 @@ public class Enemy : MonoBehaviour
         target = _target;
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+    public void TakeDamage(float damage)
+=======
+    public void ResetEnemy()
+    {
+        isDead = false;
+        inPool = false;
+    }
+
+    public bool isInPool()
+    {
+        return inPool;
+    }
+
+>>>>>>> parent of 741a4e3 (Bow Change)
     public void TakeDamage(float damageAmount)
     {
         Debug.Log("Enemy took damage!");
@@ -46,8 +71,22 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             isDead = true;
+<<<<<<< HEAD
             Die();
+=======
+<<<<<<< Updated upstream
+            Die();
+=======
+            // Handle enemy death
+            Destroy(gameObject);
+>>>>>>> Stashed changes
+>>>>>>> parent of 741a4e3 (Bow Change)
         }
+    }
+
+    private void Die(){
+        GameManager.instance.UpdatePoints(10);
+        Destroy(this.gameObject);
     }
 
     public void SetSpeed(float newSpeed)
