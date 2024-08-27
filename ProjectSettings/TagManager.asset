@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Brick
   - Enemy
-  - Tower
   layers:
   - Default
   - TransparentFX
