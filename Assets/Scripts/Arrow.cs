@@ -22,5 +22,10 @@ public class Arrow : MonoBehaviour
             // If the arrow hits the Tower, do nothing
             // Optionally, you could add code here if needed
         }
+        else if (other.CompareTag("DestroyProjectile"))
+        {
+            Destroy(gameObject);
+            //Destroys the arrow once it collides with an object dedicated to destroying the arrow
+        }
     }
 }
