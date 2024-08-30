@@ -24,14 +24,25 @@ public class GameManager : MonoBehaviour
 
     public static int playerPoints = 0;
 
+    public int initialPoints;
+    //How many points the player should start with. Adjustable in the inspector.
+
     private void Awake()
     {
         instance = this;
         gui = GetComponent<GUIManager>();
     }
 
-    private void Start(){
+    private void Start()
+    {
+        InitializePoints();
+        //Sets the starting amount of points
+    }
 
+    private void InitializePoints()
+    {
+        playerPoints = initialPoints;
+        gui.UpdatePointsText(playerPoints);
     }
 
     private void Update(){
@@ -92,6 +103,12 @@ public class GameManager : MonoBehaviour
         {
             playerPoints -= amount;
             gui.UpdatePointsText(playerPoints); // Update UI here
+            Debug.LogError(playerPoints);
+        }
+        else
+        {
+            ChangeToDefaultMode();
+            Debug.Log("Cannot afford this purchase!");
         }
     }
 }
