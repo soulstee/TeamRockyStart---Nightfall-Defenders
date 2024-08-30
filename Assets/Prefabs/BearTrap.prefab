@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.4308, y: 3.9473, z: 0}
-  m_LocalScale: {x: 1.6816, y: 0.3574, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 8e76184d360091f4da723626c2903ee3, type: 3}
   m_Color: {r: 0.554717, g: 0.32915914, b: 0.12873617, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,6 +101,8 @@ MonoBehaviour:
   trapDamage: 10
   trapDuration: 10
   rechargeTime: 3
+  openTrapSprite: {fileID: 21300000, guid: 8e76184d360091f4da723626c2903ee3, type: 3}
+  closedTrapSprite: {fileID: 21300000, guid: 881431ecae065364db815778f4d2c36c, type: 3}
 --- !u!61 &2065066816784317576
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -137,7 +139,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 20.48, y: 15.36}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

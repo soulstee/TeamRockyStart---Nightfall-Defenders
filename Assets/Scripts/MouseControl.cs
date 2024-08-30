@@ -16,36 +16,31 @@ public class MouseController : MonoBehaviour
     [Header("References")]
     public BrickPlacer2D brickPlacer;
 
+    private bool showGridIndicators = false;
+
     private void Update()
     {
         HandleInput();
+        HandleGridVisibility();
     }
 
-    bool mouseOverEnemy = false;
-
-    RaycastHit2D hit;
-
-    private void HandleInput(){
-
+    private void HandleInput()
+    {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = new RaycastHit2D(); // Ensure hit is always initialized
 
-        if(mouseMode == MouseMode.Default)
+        if (mouseMode == MouseMode.Default)
             hit = Physics2D.Raycast(mousePos, Vector3.right);
 
-        // Reset mouseOverEnemy flag
         bool mouseOverEnemy = false;
-
-        // Check if the mouse is over an enemy
         Enemy enemy = null;
+
         if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
         {
             mouseOverEnemy = true;
             enemy = hit.collider.GetComponent<Enemy>();
-
-            // Change cursor type to indicate the ability to attack the enemy (if needed)
         }
 
-        // Handle mouse click based on the current mode
         if (Input.GetMouseButtonDown(0))
         {
             switch (mouseMode)
@@ -53,14 +48,17 @@ public class MouseController : MonoBehaviour
                 case MouseMode.Default:
                     if (enemy != null)
                     {
-                        // Fire weapon here and deal damage to the enemy
                         float damageAmount = 10f; // Example damage amount
                         enemy.TakeDamage(damageAmount);
                     }
                     break;
 
                 case MouseMode.Build:
-                    brickPlacer.PlaceBlock();
+                    // Call PlaceItem instead of PlaceBlock
+                    if (brickPlacer != null)
+                    {
+                        brickPlacer.PlaceItem();
+                    }
                     break;
 
                 case MouseMode.Upgrade:
@@ -68,15 +66,38 @@ public class MouseController : MonoBehaviour
                     break;
             }
         }
+
+        // Toggle grid indicators with TAB key
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            showGridIndicators = !showGridIndicators;
+            if (brickPlacer != null)
+            {
+                brickPlacer.SetGridVisibility(showGridIndicators);
+            }
+        }
     }
 
-    private void ChangeToBuildMode(){
+    private void HandleGridVisibility()
+    {
+        // Additional code to handle other aspects of grid visibility, if necessary
+    }
+
+    public void ChangeToBuildMode()
+    {
         mouseMode = MouseMode.Build;
-        brickPlacer.CheckOpenPlacements();
+        if (brickPlacer != null)
+        {
+            brickPlacer.CheckOpenPlacements();
+        }
     }
 
-    private void ChangeToDefaultMode(){
+    public void ChangeToDefaultMode()
+    {
         mouseMode = MouseMode.Default;
-        brickPlacer.CheckOpenPlacements();
+        if (brickPlacer != null)
+        {
+            brickPlacer.CheckOpenPlacements();
+        }
     }
 }

@@ -1,76 +1,135 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GridManager2D))]
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject brickPrefab;
+    public GameObject brickPrefab; // For placing blocks
+    public GameObject bearTrapPrefab; // For bear trap
+    public GameObject thornsPrefab; // For thorns
     public GameObject occupiedCircle;
 
     [Header("References")]
-    private GridManager2D gridManager;         // Reference to GridManager2D
+    private GridManager2D gridManager; // Reference to GridManager2D
 
-    GameObject[,] gridOccupiedCircles = new GameObject[3,5];
+    private GameObject[,] gridOccupiedCircles; // Track occupied circles
 
+    // Static reference for the item to place
     public static GameObject buildSelected;
 
-    private void Start(){
+    private void Start()
+    {
         gridManager = GetComponent<GridManager2D>();
-        //Create occupation circle graphics
+        gridOccupiedCircles = new GameObject[gridManager.gridWidth, gridManager.gridHeight];
 
-        for(int x = 0; x < gridManager.gridWidth; x++){
-            for(int y = 0; y < gridManager.gridHeight; y++){
-                if(!gridManager.occupiedCells[x, y]){
-                    Vector2 gridPos = new Vector2(x,y);
+        // Create occupation circle graphics
+        for (int x = 0; x < gridManager.gridWidth; x++)
+        {
+            for (int y = 0; y < gridManager.gridHeight; y++)
+            {
+                if (!gridManager.occupiedCells[x, y])
+                {
+                    Vector2 gridPos = new Vector2(x, y);
                     GameObject ocTemp = Instantiate(occupiedCircle, gridManager.GridToWorldPosition(gridPos), Quaternion.identity);
                     ocTemp.SetActive(false);
-                    gridOccupiedCircles[x,y] = ocTemp;
+                    gridOccupiedCircles[x, y] = ocTemp;
                 }
             }
         }
     }
 
-    public void CheckOpenPlacements(){
-        //Check if occupable circle is needed
-
-        if(MouseController.mouseMode == MouseController.MouseMode.Default){
-            for(int x = 0; x < gridManager.gridWidth; x++){
-                for(int y = 0; y < gridManager.gridHeight; y++){
-                    gridOccupiedCircles[x,y].SetActive(false);
+    public void CheckOpenPlacements()
+    {
+        if (MouseController.mouseMode == MouseController.MouseMode.Default)
+        {
+            for (int x = 0; x < gridManager.gridWidth; x++)
+            {
+                for (int y = 0; y < gridManager.gridHeight; y++)
+                {
+                    gridOccupiedCircles[x, y].SetActive(false);
                 }
             }
-        }else if(MouseController.mouseMode == MouseController.MouseMode.Build){
-            for(int x = 0; x < gridManager.gridWidth; x++){
-                for(int y = 0; y < gridManager.gridHeight; y++){
-                    if(!gridManager.occupiedCells[x, y]){
-                        gridOccupiedCircles[x,y].SetActive(true);
-                    }else{
-                        gridOccupiedCircles[x,y].SetActive(false);
+        }
+        else if (MouseController.mouseMode == MouseController.MouseMode.Build)
+        {
+            for (int x = 0; x < gridManager.gridWidth; x++)
+            {
+                for (int y = 0; y < gridManager.gridHeight; y++)
+                {
+                    if (!gridManager.occupiedCells[x, y])
+                    {
+                        gridOccupiedCircles[x, y].SetActive(true);
+                    }
+                    else
+                    {
+                        gridOccupiedCircles[x, y].SetActive(false);
                     }
                 }
             }
-        }else if(MouseController.mouseMode == MouseController.MouseMode.Upgrade){
-            //Put upgrade visual here
+        }
+        else if (MouseController.mouseMode == MouseController.MouseMode.Upgrade)
+        {
+            // Put upgrade visual here
         }
     }
 
-    public void PlaceBlock()
+    public void PlaceItem()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
         Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
 
-        // Check if the position is within bounds and not occupied
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            Instantiate(brickPrefab, gridPosition, Quaternion.identity);
-            gridManager.SetCellOccupied(gridCoords, true);
+            GameObject itemToPlace = GetItemToPlace();
 
-            GameManager.instance.ChangeToDefaultMode();
+            if (itemToPlace != null)
+            {
+                Instantiate(itemToPlace, gridPosition, Quaternion.identity);
+                gridManager.SetCellOccupied(gridCoords, true);
+
+                GameManager.instance.ChangeToDefaultMode();
+            }
+            else
+            {
+                Debug.LogWarning("No valid item selected.");
+            }
         }
         else
         {
-            Debug.LogWarning("Cannot place block here. Position is either out of bounds or already occupied.");
+            Debug.LogWarning("Cannot place item here. Position is either out of bounds or already occupied.");
+        }
+    }
+
+    private GameObject GetItemToPlace()
+    {
+        if (buildSelected == brickPrefab)
+        {
+            return brickPrefab;
+        }
+        else if (buildSelected == bearTrapPrefab)
+        {
+            return bearTrapPrefab;
+        }
+        else if (buildSelected == thornsPrefab)
+        {
+            return thornsPrefab;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void SetGridVisibility(bool visible)
+    {
+        for (int x = 0; x < gridManager.gridWidth; x++)
+        {
+            for (int y = 0; y < gridManager.gridHeight; y++)
+            {
+                gridOccupiedCircles[x, y].SetActive(visible);
+            }
         }
     }
 }
