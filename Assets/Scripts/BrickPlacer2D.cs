@@ -5,10 +5,10 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject brickPrefab; // For placing blocks
-    public GameObject bearTrapPrefab; // For bear trap
-    public GameObject thornsPrefab; // For thorns
-    public GameObject occupiedCircle;
+    public GameObject bearTrapPrefab;   // For bear trap
+    public GameObject thornsPrefab;     // For thorns
+    public GameObject anvilTrapPrefab;  // For anvil trap
+    public GameObject occupiedCircle;   // Visual indicator for occupied spaces
 
     [Header("References")]
     private GridManager2D gridManager; // Reference to GridManager2D
@@ -104,17 +104,17 @@ public class BrickPlacer2D : MonoBehaviour
 
     private GameObject GetItemToPlace()
     {
-        if (buildSelected == brickPrefab)
-        {
-            return brickPrefab;
-        }
-        else if (buildSelected == bearTrapPrefab)
+        if (buildSelected == bearTrapPrefab)
         {
             return bearTrapPrefab;
         }
         else if (buildSelected == thornsPrefab)
         {
             return thornsPrefab;
+        }
+        else if (buildSelected == anvilTrapPrefab) // Anvil Trap option
+        {
+            return anvilTrapPrefab;
         }
         else
         {

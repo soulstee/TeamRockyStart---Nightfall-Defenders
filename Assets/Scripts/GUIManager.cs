@@ -24,7 +24,6 @@ public class GUIManager : MonoBehaviour
     public Image towerHealthBar;
 
     [Header("Trap Prefabs")]
-    public GameObject brickPrefab;
     public GameObject bearTrapPrefab;
     public GameObject thornsPrefab;
     public GameObject anvilPrefab;
@@ -43,10 +42,9 @@ public class GUIManager : MonoBehaviour
         brickPlacer = FindObjectOfType<BrickPlacer2D>();
 
         // Add click listeners for the trap buttons
-        buildButtons[0].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(brickPrefab));
-        buildButtons[1].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(bearTrapPrefab));
-        buildButtons[2].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(thornsPrefab));
-        //buildButtons[3].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(anvilPrefab));
+        buildButtons[0].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(bearTrapPrefab));
+        buildButtons[1].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(thornsPrefab));
+        buildButtons[2].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(anvilPrefab));
 
         towerHealthBar.fillAmount = 1f;
     }
