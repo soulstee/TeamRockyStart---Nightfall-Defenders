@@ -348,7 +348,7 @@ MonoBehaviour:
   towerHealthBar: {fileID: 930791093}
   bearTrapPrefab: {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
   thornsPrefab: {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
-  anvilPrefab: {fileID: 5514395385716567618, guid: 8eba2f9bc4d97594481e8d1b95ee55b2, type: 3}
+  anvilPrefab: {fileID: 5514395385716567618, guid: 3c9359cd5525adb4dbdb7bc8550ff824, type: 3}
 --- !u!4 &55214783
 Transform:
   m_ObjectHideFlags: 0
@@ -2134,7 +2134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bearTrapPrefab: {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
   thornsPrefab: {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
-  anvilTrapPrefab: {fileID: 5514395385716567618, guid: 8eba2f9bc4d97594481e8d1b95ee55b2, type: 3}
+  anvilTrapPrefab: {fileID: 5514395385716567618, guid: 3c9359cd5525adb4dbdb7bc8550ff824, type: 3}
   occupiedCircle: {fileID: 7199167316899595284, guid: 5d86eed1fa1aa644b81d76fe8b6a0def, type: 3}
 --- !u!4 &247654432
 Transform:
