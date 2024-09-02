@@ -5,10 +5,10 @@ using UnityEngine;
 public class AnvilTrap : MonoBehaviour
 {
     [Header("Trap Settings")]
-    public Sprite[] activeSprites;   // Sprites to display when the trap is activated
-    public Sprite inactiveSprite;    // Sprite to display when the trap is inactive
-    public float activationDelay = 0.1f; // Delay between sprite changes during activation
-    public float rechargeTime = 5f;  // Time it takes for the trap to recharge
+    public Sprite[] activeSprites;  // Sprites for active trap animation
+    public Sprite inactiveSprite;   // Sprite for inactive trap state
+    public float activationDelay;   // Delay between sprite changes during activation
+    public float rechargeTime;      // Time to recharge the trap
 
     private bool isActive = false;
     private SpriteRenderer spriteRenderer;
@@ -18,18 +18,19 @@ public class AnvilTrap : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         trapCollider = GetComponent<Collider2D>();
-        SetTrapInactive();  // Start with the trap inactive
+        SetTrapInactive();  // Ensure trap starts as inactive
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Check if the collider is an enemy and trap is inactive
         if (collision.CompareTag("Enemy") && !isActive)
         {
-            Debug.Log("Enemy collided with the trap.");
+            // Get the enemy component
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
             {
-                Debug.Log("Starting trap activation.");
+                Debug.Log("Enemy collided with the trap.");
                 StartCoroutine(ActivateTrap(enemy));
             }
         }
@@ -38,8 +39,9 @@ public class AnvilTrap : MonoBehaviour
     private IEnumerator ActivateTrap(Enemy enemy)
     {
         isActive = true;
+        trapCollider.enabled = false; // Disable the collider to prevent re-triggering
 
-        // Sequentially switch sprites for the active animation
+        // Sequentially change sprites for active trap animation
         foreach (Sprite sprite in activeSprites)
         {
             spriteRenderer.sprite = sprite;
@@ -49,21 +51,14 @@ public class AnvilTrap : MonoBehaviour
         // Deal damage to the enemy
         DealDamage(enemy);
 
-        // Set trap to inactive state
-        SetTrapInactive();
-
-        // Wait for recharge time before reactivating
+        // Recharge and reset trap
         yield return new WaitForSeconds(rechargeTime);
 
-        // Trap is ready to be activated again
-        isActive = false;
-        trapCollider.enabled = true; // Enable the collider again after recharging
-        spriteRenderer.sprite = inactiveSprite;
+        SetTrapInactive();
     }
 
     private void DealDamage(Enemy enemy)
     {
-        // Apply damage to the main enemy
         if (enemy != null)
         {
             enemy.TakeDamage(150f); // Example damage amount
@@ -72,8 +67,8 @@ public class AnvilTrap : MonoBehaviour
 
     private void SetTrapInactive()
     {
-        spriteRenderer.sprite = inactiveSprite; // Set to the inactive sprite
-        trapCollider.enabled = true;            // Keep collider enabled
-        isActive = false;                       // Trap is inactive by default
+        spriteRenderer.sprite = inactiveSprite; // Set inactive sprite
+        trapCollider.enabled = true;            // Re-enable collider for new activations
+        isActive = false;                       // Mark trap as inactive
     }
 }

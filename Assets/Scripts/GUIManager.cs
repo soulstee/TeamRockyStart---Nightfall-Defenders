@@ -15,7 +15,6 @@ public class GUIManager : MonoBehaviour
     public Phase phase;
 
     [Header("Slots")]
-
     public WeaponSlot[] slots;
     public BuildSlot[] buildButtons;
 
@@ -26,30 +25,40 @@ public class GUIManager : MonoBehaviour
     public Image towerHealthBar;
 
     [Header("Colors")]
-
     public Color weaponSlotSelectedColor;
     public Color weaponSlotDefaultColor;
 
-    private void Start(){
-        for(int i = 0; i < buildButtons.Length; i++){
+    [Header("Prefabs and References")]
+    public GameObject bearTrapPrefab; // Declare these
+    public GameObject thornsPrefab;
+    public GameObject anvilTrapPrefab;
+    public BrickPlacer2D brickPlacer; // Declare this
+
+    private void Start()
+    {
+        for (int i = 0; i < buildButtons.Length; i++)
+        {
             buildButtons[i].Initialize(i);
         }
 
-        for(int i = 0; i < slots.Length; i++){
-            for(int j = 0; j < slots[i].upgradeButtons.Length; j++){
-                if(slots[i].upgradeButtons[j].unlocked){
+        for (int i = 0; i < slots.Length; i++)
+        {
+            for (int j = 0; j < slots[i].upgradeButtons.Length; j++)
+            {
+                if (slots[i].upgradeButtons[j].unlocked)
+                {
                     UpdateUpgradeSlots(i);
                 }
             }
         }
 
-        // Get BrickPlacer2D component
+        // Ensure BrickPlacer2D component is found
         brickPlacer = FindObjectOfType<BrickPlacer2D>();
 
         // Add click listeners for the trap buttons
         buildButtons[0].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(bearTrapPrefab));
         buildButtons[1].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(thornsPrefab));
-        buildButtons[2].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(anvilPrefab));
+        buildButtons[2].button.GetComponent<Button>().onClick.AddListener(() => SelectItem(anvilTrapPrefab));
 
         towerHealthBar.fillAmount = 1f;
     }
@@ -71,13 +80,17 @@ public class GUIManager : MonoBehaviour
         CheckAllUIUpdate(GameManager.playerPoints);
     }
 
-    private void CheckAllUIUpdate(int _points){
-        
+    private void CheckAllUIUpdate(int _points)
+    {
+        // Implementation here if needed
     }
 
-    public void UpdateWeaponSlot(int _id){
-        foreach(WeaponSlot g in slots){
-            if(g.slot.GetComponent<Image>().color == weaponSlotSelectedColor){
+    public void UpdateWeaponSlot(int _id)
+    {
+        foreach (WeaponSlot g in slots)
+        {
+            if (g.slot.GetComponent<Image>().color == weaponSlotSelectedColor)
+            {
                 g.slot.GetComponent<Image>().color = weaponSlotDefaultColor;
             }
         }
@@ -85,36 +98,46 @@ public class GUIManager : MonoBehaviour
         slots[_id].slot.GetComponent<Image>().color = weaponSlotSelectedColor;
     }
 
-    public void BuyWeaponSlot(int _id){
-        if(slots[_id].unlocked){
+    public void BuyWeaponSlot(int _id)
+    {
+        if (slots[_id].unlocked)
+        {
             return;
         }
 
-        GameManager.instance.UpdatePoints(-slots[_id].cost);
+        GameManager.instance.SpendPoints(slots[_id].cost); // Use SpendPoints method
 
         slots[_id].unlocked = true;
     }
 
-    public void BuyUpgradeSlot(int _id){
-        if(slots[_id].currentLevel < 3 ){
-            slots[_id].currentLevel++;}
-        else{
+    public void BuyUpgradeSlot(int _id)
+    {
+        if (slots[_id].currentLevel < 3)
+        {
+            slots[_id].currentLevel++;
+        }
+        else
+        {
             return;
         }
 
-        UpgradeSlot _tempSlot = slots[_id].upgradeButtons[slots[_id].currentLevel-1];
+        UpgradeSlot _tempSlot = slots[_id].upgradeButtons[slots[_id].currentLevel - 1];
 
-        if(GameManager.playerPoints >= _tempSlot.cost){
+        if (GameManager.playerPoints >= _tempSlot.cost)
+        {
             _tempSlot.unlocked = true;
-            GameManager.instance.UpdatePoints(-_tempSlot.cost);
+            GameManager.instance.SpendPoints(_tempSlot.cost); // Use SpendPoints method
             PlayerShoot.weapons[_id].level = slots[_id].currentLevel;
             UpdateUpgradeSlots(_id);
         }
     }
 
-    private void UpdateUpgradeSlots(int _id){
-        foreach(UpgradeSlot temp in slots[_id].upgradeButtons){
-            if(temp.unlocked == true){
+    private void UpdateUpgradeSlots(int _id)
+    {
+        foreach (UpgradeSlot temp in slots[_id].upgradeButtons)
+        {
+            if (temp.unlocked)
+            {
                 temp.slot.GetComponent<Image>().color = weaponSlotSelectedColor;
             }
         }
@@ -144,8 +167,10 @@ public class WeaponSlot
     public int currentLevel = 1;
     public UpgradeSlot[] upgradeButtons = new UpgradeSlot[3];
 }
+
 [System.Serializable]
-public class UpgradeSlot{
+public class UpgradeSlot
+{
     public GameObject slot;
     public int level;
     public int cost;
@@ -160,8 +185,8 @@ public class BuildSlot
 
     private int cost;
 
-    public void Initialize(int _id){
-        cost = GameManager.instance.brickPlacer.buildingBlocks[_id].GetComponent<Block>().cost;
+    public void Initialize(int _id)
+    {
         priceText.text = "$" + cost.ToString();
     }
 }

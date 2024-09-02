@@ -5,15 +5,13 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public static GameObject currentBuildPrefab;
-    public GameObject[] buildingBlocks;
-    public GameObject occupiedCircle;
+    public GameObject bearTrapPrefab;   // For bear trap
+    public GameObject thornsPrefab;     // For thorns
+    public GameObject anvilTrapPrefab;  // For anvil trap
+    public GameObject occupiedCircle;   // Visual indicator for occupied spaces
 
     [Header("References")]
     private GridManager2D gridManager; // Reference to GridManager2D
-    private GameManager gameManager; //Reference to GameManager
-    private GameObject gameManagerObj; //Reference to GameManager object
-    private GUIManager guiManager; //Reference to GUIManager
 
     private GameObject[,] gridOccupiedCircles; // Track occupied circles
 
@@ -23,11 +21,7 @@ public class BrickPlacer2D : MonoBehaviour
     private void Start()
     {
         gridManager = GetComponent<GridManager2D>();
-        gameManagerObj = GameObject.Find("GameManager");
-        gameManager = gameManagerObj.GetComponent<GameManager>();
-        guiManager = gameManagerObj.GetComponent<GUIManager>();
         gridOccupiedCircles = new GameObject[gridManager.gridWidth, gridManager.gridHeight];
-
 
         // Create occupation circle graphics
         for (int x = 0; x < gridManager.gridWidth; x++)
@@ -45,54 +39,62 @@ public class BrickPlacer2D : MonoBehaviour
         }
     }
 
-    public void SelectBuildingBlock(int _id){
-        currentBuildPrefab = buildingBlocks[_id];
-    }
-
-    public void CheckOpenPlacements(){
-        //Check if occupable circle is needed
-
-        if(MouseController.mouseMode == MouseController.MouseMode.Default){
-            for(int x = 0; x < gridManager.gridWidth; x++){
-                for(int y = 0; y < gridManager.gridHeight; y++){
-                    gridOccupiedCircles[x,y].SetActive(false);
+    public void CheckOpenPlacements()
+    {
+        if (MouseController.mouseMode == MouseController.MouseMode.Default)
+        {
+            for (int x = 0; x < gridManager.gridWidth; x++)
+            {
+                for (int y = 0; y < gridManager.gridHeight; y++)
+                {
+                    gridOccupiedCircles[x, y].SetActive(false);
                 }
             }
-        }else if(MouseController.mouseMode == MouseController.MouseMode.Build && GameManager.playerPoints >= currentBuildPrefab.GetComponent<Block>().cost){
-            for(int x = 0; x < gridManager.gridWidth; x++){
-                for(int y = 0; y < gridManager.gridHeight; y++){
-                    if(!gridManager.occupiedCells[x, y]){
-                        gridOccupiedCircles[x,y].SetActive(true);
-                    }else{
-                        gridOccupiedCircles[x,y].SetActive(false);
+        }
+        else if (MouseController.mouseMode == MouseController.MouseMode.Build)
+        {
+            for (int x = 0; x < gridManager.gridWidth; x++)
+            {
+                for (int y = 0; y < gridManager.gridHeight; y++)
+                {
+                    if (!gridManager.occupiedCells[x, y])
+                    {
+                        gridOccupiedCircles[x, y].SetActive(true);
+                    }
+                    else
+                    {
+                        gridOccupiedCircles[x, y].SetActive(false);
                     }
                 }
             }
-        }else if(MouseController.mouseMode == MouseController.MouseMode.Upgrade){
-            //Put upgrade visual here
-        }else{
-            MouseController.mouseMode = MouseController.MouseMode.Default;
+        }
+        else if (MouseController.mouseMode == MouseController.MouseMode.Upgrade)
+        {
+            // Put upgrade visual here
         }
     }
 
     public void PlaceItem()
     {
-        if(GameManager.playerPoints < currentBuildPrefab.GetComponent<Block>().cost){
-            return;
-        }
-
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
         Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
 
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            Instantiate(currentBuildPrefab, gridPosition, Quaternion.identity);
-            gridManager.SetCellOccupied(gridCoords, true);
+            GameObject itemToPlace = GetItemToPlace();
 
-            GameManager.instance.UpdatePoints(-currentBuildPrefab.GetComponent<Block>().cost);
+            if (itemToPlace != null)
+            {
+                Instantiate(itemToPlace, gridPosition, Quaternion.identity);
+                gridManager.SetCellOccupied(gridCoords, true);
 
-            GameManager.instance.ChangeToDefaultMode();
+                GameManager.instance.ChangeToDefaultMode();
+            }
+            else
+            {
+                Debug.LogWarning("No valid item selected.");
+            }
         }
         else
         {
@@ -104,17 +106,14 @@ public class BrickPlacer2D : MonoBehaviour
     {
         if (buildSelected == bearTrapPrefab)
         {
-            gameManager.SpendPoints(guiManager.buildButtons[0].cost);
             return bearTrapPrefab;
         }
         else if (buildSelected == thornsPrefab)
         {
-            gameManager.SpendPoints(guiManager.buildButtons[1].cost);
             return thornsPrefab;
         }
         else if (buildSelected == anvilTrapPrefab) // Anvil Trap option
         {
-            gameManager.SpendPoints(guiManager.buildButtons[2].cost);
             return anvilTrapPrefab;
         }
         else

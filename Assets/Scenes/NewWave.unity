@@ -169,6 +169,7 @@ MonoBehaviour:
   gridManager: {fileID: 247654430}
   brickPlacer: {fileID: 247654431}
   gui: {fileID: 55214782}
+  initialPoints: 0
 --- !u!114 &55214782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +248,10 @@ MonoBehaviour:
   towerHealthBar: {fileID: 930791093}
   weaponSlotSelectedColor: {r: 0, g: 0.8480973, b: 1, a: 0.5019608}
   weaponSlotDefaultColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+  bearTrapPrefab: {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
+  thornsPrefab: {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
+  anvilTrapPrefab: {fileID: 5514395385716567618, guid: 3c9359cd5525adb4dbdb7bc8550ff824, type: 3}
+  brickPlacer: {fileID: 0}
 --- !u!4 &55214783
 Transform:
   m_ObjectHideFlags: 0
@@ -358,10 +363,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99bfa3a434944854db0b25d42fedb5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingBlocks:
-  - {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
-  - {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
-  - {fileID: 4909989758291641330, guid: 817be350ca74d2f4fb212f67f005832f, type: 3}
+  bearTrapPrefab: {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
+  thornsPrefab: {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
+  anvilTrapPrefab: {fileID: 5514395385716567618, guid: 3c9359cd5525adb4dbdb7bc8550ff824, type: 3}
   occupiedCircle: {fileID: 7199167316899595284, guid: 5d86eed1fa1aa644b81d76fe8b6a0def, type: 3}
 --- !u!4 &247654432
 Transform:
@@ -536,8 +540,8 @@ GameObject:
   - component: {fileID: 404668378}
   - component: {fileID: 404668377}
   - component: {fileID: 404668376}
-  - component: {fileID: 404668375}
   - component: {fileID: 404668379}
+  - component: {fileID: 404668380}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Tower
@@ -545,51 +549,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &404668375
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404668374}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0038594902, y: 0.013494134}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.17, y: 1.55}
-    newSize: {x: 1.17, y: 1.55}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.1777191, y: 1.5230117}
-  m_EdgeRadius: 0
 --- !u!114 &404668376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +656,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &404668380
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404668374}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.21297191, y: 0.10000004}
+  serializedVersion: 2
+  m_Radius: 0.63869786
 --- !u!1 &481104606 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9176943859069554161, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
@@ -1216,6 +1210,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 55214781}
+    - target: {fileID: 8135959245268312520, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -416.362
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135959245268312520, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -1128.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135959245268312520, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -564.26
+      objectReference: {fileID: 0}
     - target: {fileID: 8856722443482924050, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
