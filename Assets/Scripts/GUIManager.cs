@@ -14,6 +14,8 @@ public class GUIManager : MonoBehaviour
 
     public Phase phase;
 
+    [Header("Slots")]
+
     public WeaponSlot[] slots;
     public BuildSlot[] buildButtons;
 
@@ -23,19 +25,22 @@ public class GUIManager : MonoBehaviour
     public GameObject startWaveButton;
     public Image towerHealthBar;
 
-    [Header("Trap Prefabs")]
-    public GameObject bearTrapPrefab;
-    public GameObject thornsPrefab;
-    public GameObject anvilPrefab;
+    [Header("Colors")]
 
-    private BrickPlacer2D brickPlacer; // Reference to BrickPlacer2D
+    public Color weaponSlotSelectedColor;
+    public Color weaponSlotDefaultColor;
 
-    private void Start()
-    {
-        // Initialize Build Buttons
-        foreach (BuildSlot b in buildButtons)
-        {
-            b.Initialize();
+    private void Start(){
+        for(int i = 0; i < buildButtons.Length; i++){
+            buildButtons[i].Initialize(i);
+        }
+
+        for(int i = 0; i < slots.Length; i++){
+            for(int j = 0; j < slots[i].upgradeButtons.Length; j++){
+                if(slots[i].upgradeButtons[j].unlocked){
+                    UpdateUpgradeSlots(i);
+                }
+            }
         }
 
         // Get BrickPlacer2D component
@@ -60,9 +65,59 @@ public class GUIManager : MonoBehaviour
     }
 
     // Update the points text display
-    public void UpdatePointsText(int points)
+    public void UpdatePointsText()
     {
-        pointsText.text = points.ToString(); // Set the points text
+        pointsText.text = GameManager.playerPoints.ToString(); // Set the points text
+        CheckAllUIUpdate(GameManager.playerPoints);
+    }
+
+    private void CheckAllUIUpdate(int _points){
+        
+    }
+
+    public void UpdateWeaponSlot(int _id){
+        foreach(WeaponSlot g in slots){
+            if(g.slot.GetComponent<Image>().color == weaponSlotSelectedColor){
+                g.slot.GetComponent<Image>().color = weaponSlotDefaultColor;
+            }
+        }
+
+        slots[_id].slot.GetComponent<Image>().color = weaponSlotSelectedColor;
+    }
+
+    public void BuyWeaponSlot(int _id){
+        if(slots[_id].unlocked){
+            return;
+        }
+
+        GameManager.instance.UpdatePoints(-slots[_id].cost);
+
+        slots[_id].unlocked = true;
+    }
+
+    public void BuyUpgradeSlot(int _id){
+        if(slots[_id].currentLevel < 3 ){
+            slots[_id].currentLevel++;}
+        else{
+            return;
+        }
+
+        UpgradeSlot _tempSlot = slots[_id].upgradeButtons[slots[_id].currentLevel-1];
+
+        if(GameManager.playerPoints >= _tempSlot.cost){
+            _tempSlot.unlocked = true;
+            GameManager.instance.UpdatePoints(-_tempSlot.cost);
+            PlayerShoot.weapons[_id].level = slots[_id].currentLevel;
+            UpdateUpgradeSlots(_id);
+        }
+    }
+
+    private void UpdateUpgradeSlots(int _id){
+        foreach(UpgradeSlot temp in slots[_id].upgradeButtons){
+            if(temp.unlocked == true){
+                temp.slot.GetComponent<Image>().color = weaponSlotSelectedColor;
+            }
+        }
     }
 
     // Select the item and set it as the active prefab to build
@@ -84,8 +139,17 @@ public class GUIManager : MonoBehaviour
 public class WeaponSlot
 {
     public GameObject slot;
-
-    public GameObject[] upgradeButtons = new GameObject[3];
+    public bool unlocked;
+    public int cost;
+    public int currentLevel = 1;
+    public UpgradeSlot[] upgradeButtons = new UpgradeSlot[3];
+}
+[System.Serializable]
+public class UpgradeSlot{
+    public GameObject slot;
+    public int level;
+    public int cost;
+    public bool unlocked;
 }
 
 [System.Serializable]
@@ -94,10 +158,10 @@ public class BuildSlot
     public GameObject button;
     public TextMeshProUGUI priceText;
 
-    public int cost;
+    private int cost;
 
-    public void Initialize()
-    {
+    public void Initialize(int _id){
+        cost = GameManager.instance.brickPlacer.buildingBlocks[_id].GetComponent<Block>().cost;
         priceText.text = "$" + cost.ToString();
     }
 }

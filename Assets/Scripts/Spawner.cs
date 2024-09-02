@@ -10,14 +10,16 @@ public class Spawner : MonoBehaviour
 
     public float spawnInterval = 10f;
 
-    private int currentEnemyCount = 0;
+    public int currentEnemyCount = 0;
 
     private GridManager2D gridManager;
 
     public GameObject[] enemyPrefab;
-    private Enemy[] currentEnemies;
+    [HideInInspector]
+    public Enemy[] currentEnemies;
 
     private int[] enemiesToSpawn;
+    private int totalEnemiesSpawned;
 
     private void Start(){
         gridManager = GameManager.instance.gridManager;
@@ -26,6 +28,7 @@ public class Spawner : MonoBehaviour
     public void SpawnWave(){
         currentEnemies = new Enemy[GameManager.currentWave.totalEnemies];
         enemiesToSpawn = GameManager.currentWave.enemiesID;
+        spawnInterval = GameManager.currentWave.spawnInterval;
     }
 
     private void SpawnEnemy(){
@@ -39,15 +42,19 @@ public class Spawner : MonoBehaviour
             GameObject enemySpawn = Instantiate(enemyPrefab[randomEnemyType], randPos, Quaternion.identity);
             //Match type with prefab (probably will be removed later)
             Enemy.TypeOfEnemy en = (Enemy.TypeOfEnemy)randomEnemyType;
-            enemySpawn.GetComponent<Enemy>().Initialize(FindTarget(randPos));
+            enemySpawn.GetComponent<Enemy>().Initialize(FindTarget(randPos), this);
             currentEnemies[currentEnemyCount] = enemySpawn.GetComponent<Enemy>();
 
             //Add to number after adding to array
             currentEnemyCount++;
+            totalEnemiesSpawned++;
     }
 
     private int FindEnemyToSpawn(){
         bool[] validSpawns = new bool[enemiesToSpawn.Length];
+
+        int r = (int)Random.Range(0,2);
+        return r;
 
         for(int i = 0; i < enemiesToSpawn.Length; i++){
             if(enemiesToSpawn[i] > 0){
@@ -78,7 +85,10 @@ public class Spawner : MonoBehaviour
     }
 
     private Vector2 FindTarget(Vector2 _enemyPos){
-        float endOfGridX = (int)gridManager.gridWidth * gridManager.cellSize + gridManager.gridOrigin.x;
+        float gridAng = Mathf.Atan((gridManager.gridHeightOffset/gridManager.gridHeight));
+        float triangleOffset = Mathf.Tan(gridAng);
+
+        float endOfGridX = (int)gridManager.gridWidth * gridManager.cellSize + gridManager.gridOrigin.x + 5f - (triangleOffset*_enemyPos.y);
 
         return new Vector2(endOfGridX, _enemyPos.y);
     }
@@ -96,17 +106,18 @@ public class Spawner : MonoBehaviour
 
         //Spawns enemies at the spawnInterval variable
         //Ends section when wave time is up and enemies are dead
-        if (spawnIntervalTime >= spawnInterval/spawnTimeModifier && !GameManager.waveEnded)
+        if (spawnIntervalTime >= spawnInterval/spawnTimeModifier && !GameManager.waveEnded && totalEnemiesSpawned<GameManager.currentWave.totalEnemies)
         {
             spawnIntervalTime = 0;
             //Spawn Enemy function here
             SpawnEnemy();
         }
 
-        if(!GameManager.waveEnded && GameManager.waveCurrentTime > GameManager.currentWave.waveTime && currentEnemyCount == 0){
+        if(!GameManager.waveEnded && GameManager.waveCurrentTime > GameManager.currentWave.waveTime && currentEnemyCount == 0 && totalEnemiesSpawned == GameManager.currentWave.totalEnemies){
 
             GameManager.instance.EndWave();
 
+            totalEnemiesSpawned = 0;
             spawnIntervalTime = 0;
             spawnTimeModifier = 0;
         }

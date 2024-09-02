@@ -21,11 +21,11 @@ public class BowCharacter : MonoBehaviour
         // Shoot an arrow when the left mouse button is clicked
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ShootArrow();
+            //ShootArrow();
         }
     }
 
-    void ShootArrow()
+    /*void ShootArrow()
     {
         // Play the bow firing animation
         animator.Play("Bow_Fire");
@@ -49,7 +49,7 @@ public class BowCharacter : MonoBehaviour
 
         // Start a coroutine to revert to idle after firing
         StartCoroutine(RevertToIdle());
-    }
+    }*/
 
     private IEnumerator RevertToIdle()
     {

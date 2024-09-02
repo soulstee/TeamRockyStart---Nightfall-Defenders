@@ -5,10 +5,9 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject bearTrapPrefab;   // For bear trap
-    public GameObject thornsPrefab;     // For thorns
-    public GameObject anvilTrapPrefab;  // For anvil trap
-    public GameObject occupiedCircle;   // Visual indicator for occupied spaces
+    public static GameObject currentBuildPrefab;
+    public GameObject[] buildingBlocks;
+    public GameObject occupiedCircle;
 
     [Header("References")]
     private GridManager2D gridManager; // Reference to GridManager2D
@@ -46,62 +45,54 @@ public class BrickPlacer2D : MonoBehaviour
         }
     }
 
-    public void CheckOpenPlacements()
-    {
-        if (MouseController.mouseMode == MouseController.MouseMode.Default)
-        {
-            for (int x = 0; x < gridManager.gridWidth; x++)
-            {
-                for (int y = 0; y < gridManager.gridHeight; y++)
-                {
-                    gridOccupiedCircles[x, y].SetActive(false);
+    public void SelectBuildingBlock(int _id){
+        currentBuildPrefab = buildingBlocks[_id];
+    }
+
+    public void CheckOpenPlacements(){
+        //Check if occupable circle is needed
+
+        if(MouseController.mouseMode == MouseController.MouseMode.Default){
+            for(int x = 0; x < gridManager.gridWidth; x++){
+                for(int y = 0; y < gridManager.gridHeight; y++){
+                    gridOccupiedCircles[x,y].SetActive(false);
                 }
             }
-        }
-        else if (MouseController.mouseMode == MouseController.MouseMode.Build)
-        {
-            for (int x = 0; x < gridManager.gridWidth; x++)
-            {
-                for (int y = 0; y < gridManager.gridHeight; y++)
-                {
-                    if (!gridManager.occupiedCells[x, y])
-                    {
-                        gridOccupiedCircles[x, y].SetActive(true);
-                    }
-                    else
-                    {
-                        gridOccupiedCircles[x, y].SetActive(false);
+        }else if(MouseController.mouseMode == MouseController.MouseMode.Build && GameManager.playerPoints >= currentBuildPrefab.GetComponent<Block>().cost){
+            for(int x = 0; x < gridManager.gridWidth; x++){
+                for(int y = 0; y < gridManager.gridHeight; y++){
+                    if(!gridManager.occupiedCells[x, y]){
+                        gridOccupiedCircles[x,y].SetActive(true);
+                    }else{
+                        gridOccupiedCircles[x,y].SetActive(false);
                     }
                 }
             }
-        }
-        else if (MouseController.mouseMode == MouseController.MouseMode.Upgrade)
-        {
-            // Put upgrade visual here
+        }else if(MouseController.mouseMode == MouseController.MouseMode.Upgrade){
+            //Put upgrade visual here
+        }else{
+            MouseController.mouseMode = MouseController.MouseMode.Default;
         }
     }
 
     public void PlaceItem()
     {
+        if(GameManager.playerPoints < currentBuildPrefab.GetComponent<Block>().cost){
+            return;
+        }
+
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
         Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
 
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            GameObject itemToPlace = GetItemToPlace();
+            Instantiate(currentBuildPrefab, gridPosition, Quaternion.identity);
+            gridManager.SetCellOccupied(gridCoords, true);
 
-            if (itemToPlace != null)
-            {
-                Instantiate(itemToPlace, gridPosition, Quaternion.identity);
-                gridManager.SetCellOccupied(gridCoords, true);
+            GameManager.instance.UpdatePoints(-currentBuildPrefab.GetComponent<Block>().cost);
 
-                GameManager.instance.ChangeToDefaultMode();
-            }
-            else
-            {
-                Debug.LogWarning("No valid item selected.");
-            }
+            GameManager.instance.ChangeToDefaultMode();
         }
         else
         {

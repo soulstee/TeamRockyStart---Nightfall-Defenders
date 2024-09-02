@@ -11,8 +11,10 @@ public class PauseMenu : MonoBehaviour
     public GameObject[] confirmMenu;
 
     private void Update(){
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        if(Input.GetKeyDown(KeyCode.Escape) && MouseController.mouseMode == MouseController.MouseMode.Default){
             Continue();
+        }else if(Input.GetKeyDown(KeyCode.Escape) && MouseController.mouseMode == MouseController.MouseMode.Build){
+            GameManager.instance.ChangeToDefaultMode();
         }
     }
 

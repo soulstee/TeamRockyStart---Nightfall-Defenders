@@ -48,8 +48,8 @@ public class MouseController : MonoBehaviour
                 case MouseMode.Default:
                     if (enemy != null)
                     {
-                        float damageAmount = 10f; // Example damage amount
-                        enemy.TakeDamage(damageAmount);
+                        // Fire weapon here and deal damage to the enemy
+                        
                     }
                     break;
 
@@ -92,8 +92,7 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    public void ChangeToDefaultMode()
-    {
+    public void ChangeToDefaultMode(){
         mouseMode = MouseMode.Default;
         if (brickPlacer != null)
         {

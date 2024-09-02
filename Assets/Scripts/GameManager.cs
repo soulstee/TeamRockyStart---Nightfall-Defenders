@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     public GridManager2D gridManager;
     public BrickPlacer2D brickPlacer;
-    private GUIManager gui;
+    public GUIManager gui;
 
     public static bool waveEnded = true;
 
@@ -33,26 +33,24 @@ public class GameManager : MonoBehaviour
         gui = GetComponent<GUIManager>();
     }
 
-    private void Start()
-    {
-        InitializePoints();
-        //Sets the starting amount of points
-    }
-
-    private void InitializePoints()
-    {
-        playerPoints = initialPoints;
-        gui.UpdatePointsText(playerPoints);
+    private void Start(){
+        
     }
 
     private void Update(){
         if(!waveEnded){
             GameManager.waveCurrentTime += Time.deltaTime;
         }
+
+        if(Input.GetKeyDown(KeyCode.K)){
+            UpdatePoints(1000);
+        }
     }
 
-    public static void UpdatePoints(int points){
+    public void UpdatePoints(int points){
         playerPoints += points;
+
+        gui.UpdatePointsText();
     }
 
     public void StartWave(){
@@ -111,8 +109,7 @@ public class GameManager : MonoBehaviour
         if (playerPoints >= amount)
         {
             playerPoints -= amount;
-            gui.UpdatePointsText(playerPoints); // Update UI here
-            Debug.Log(playerPoints + "points remaining after purchase");
+            gui.UpdatePointsText(); // Update UI here
         }
     }
 }
