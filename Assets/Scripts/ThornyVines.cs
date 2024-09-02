@@ -19,6 +19,7 @@ public class ThornyVines : MonoBehaviour
             Enemy enemy = collision.GetComponent<Enemy>();
             if (enemy != null)
             {
+                Debug.Log("Enemy");
                 StartCoroutine(SlowDownEnemy(enemy));
             }
         }

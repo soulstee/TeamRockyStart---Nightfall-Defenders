@@ -54,8 +54,7 @@ public class MouseController : MonoBehaviour
                     if (enemy != null)
                     {
                         // Fire weapon here and deal damage to the enemy
-                        float damageAmount = 10f; // Example damage amount
-                        enemy.TakeDamage(damageAmount);
+                        
                     }
                     break;
 
@@ -75,7 +74,7 @@ public class MouseController : MonoBehaviour
         brickPlacer.CheckOpenPlacements();
     }
 
-    private void ChangeToDefaultMode(){
+    public void ChangeToDefaultMode(){
         mouseMode = MouseMode.Default;
         brickPlacer.CheckOpenPlacements();
     }

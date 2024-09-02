@@ -4,7 +4,8 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject brickPrefab;
+    public static GameObject currentBuildPrefab;
+    public GameObject[] buildingBlocks;
     public GameObject occupiedCircle;
 
     [Header("References")]
@@ -30,6 +31,10 @@ public class BrickPlacer2D : MonoBehaviour
         }
     }
 
+    public void SelectBuildingBlock(int _id){
+        currentBuildPrefab = buildingBlocks[_id];
+    }
+
     public void CheckOpenPlacements(){
         //Check if occupable circle is needed
 
@@ -39,7 +44,7 @@ public class BrickPlacer2D : MonoBehaviour
                     gridOccupiedCircles[x,y].SetActive(false);
                 }
             }
-        }else if(MouseController.mouseMode == MouseController.MouseMode.Build){
+        }else if(MouseController.mouseMode == MouseController.MouseMode.Build && GameManager.playerPoints >= currentBuildPrefab.GetComponent<Block>().cost){
             for(int x = 0; x < gridManager.gridWidth; x++){
                 for(int y = 0; y < gridManager.gridHeight; y++){
                     if(!gridManager.occupiedCells[x, y]){
@@ -51,11 +56,17 @@ public class BrickPlacer2D : MonoBehaviour
             }
         }else if(MouseController.mouseMode == MouseController.MouseMode.Upgrade){
             //Put upgrade visual here
+        }else{
+            MouseController.mouseMode = MouseController.MouseMode.Default;
         }
     }
 
     public void PlaceBlock()
     {
+        if(GameManager.playerPoints < currentBuildPrefab.GetComponent<Block>().cost){
+            return;
+        }
+
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = gridManager.GetNearestPointOnGrid(mousePosition);
         Vector2Int gridCoords = gridManager.WorldToGridCoordinates(gridPosition);
@@ -63,8 +74,10 @@ public class BrickPlacer2D : MonoBehaviour
         // Check if the position is within bounds and not occupied
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            Instantiate(brickPrefab, gridPosition, Quaternion.identity);
+            Instantiate(currentBuildPrefab, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
+
+            GameManager.instance.UpdatePoints(-currentBuildPrefab.GetComponent<Block>().cost);
 
             GameManager.instance.ChangeToDefaultMode();
         }

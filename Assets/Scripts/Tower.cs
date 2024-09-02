@@ -38,6 +38,6 @@ public class Tower : MonoBehaviour
         Debug.Log("The tower has been destroyed!");
 
         // Optionally, trigger end of game or other effects
-        // GameManager.instance.EndGame(); // Example: end the game
+        GameManager.instance.EndGame(); // Example: end the game
     }
 }

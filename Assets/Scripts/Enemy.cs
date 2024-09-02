@@ -15,12 +15,14 @@ public class Enemy : MonoBehaviour
     public float speed = 5f;
     public float health = 100f;
     public float damage = 10f; // Damage dealt to the tower
+    public int pointsOnDeath = 10;
 
     private float originalSpeed;
     private Vector2 target;
     private bool isDead = false;
     private bool inPool = false;
     private Transform targetTower; // Reference to the tower
+    private Spawner spawner;
 
     private void Start()
     {
@@ -41,8 +43,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Initialize(Vector2 _target)
+    public void Initialize(Vector2 _target, Spawner _spawner)
     {
+        spawner = _spawner;
         target = _target;
     }
 
@@ -59,14 +62,21 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        Debug.Log("Enemy took damage!");
-        health -= damageAmount;
-        if (health <= 0)
-        {
-            isDead = true;
-            // Handle enemy death
-            Destroy(gameObject);
+        health-=damageAmount;
+
+        if(health<=0){
+            Die();
         }
+    }
+
+    private void Die(){
+        for(int i = 0; i < spawner.currentEnemies.Length; i++){
+            if(spawner.currentEnemies[i] == this){
+                spawner.currentEnemyCount--;
+            }
+        }
+        GameManager.instance.UpdatePoints(pointsOnDeath);
+        Destroy(this.gameObject);
     }
 
     public void SetSpeed(float newSpeed)
