@@ -12,6 +12,9 @@ public class BrickPlacer2D : MonoBehaviour
 
     [Header("References")]
     private GridManager2D gridManager; // Reference to GridManager2D
+    private GameManager gameManager; //Reference to GameManager
+    private GameObject gameManagerObj; //Reference to GameManager object
+    private GUIManager guiManager; //Reference to GUIManager
 
     private GameObject[,] gridOccupiedCircles; // Track occupied circles
 
@@ -21,7 +24,11 @@ public class BrickPlacer2D : MonoBehaviour
     private void Start()
     {
         gridManager = GetComponent<GridManager2D>();
+        gameManagerObj = GameObject.Find("GameManager");
+        gameManager = gameManagerObj.GetComponent<GameManager>();
+        guiManager = gameManagerObj.GetComponent<GUIManager>();
         gridOccupiedCircles = new GameObject[gridManager.gridWidth, gridManager.gridHeight];
+
 
         // Create occupation circle graphics
         for (int x = 0; x < gridManager.gridWidth; x++)
@@ -106,14 +113,17 @@ public class BrickPlacer2D : MonoBehaviour
     {
         if (buildSelected == bearTrapPrefab)
         {
+            gameManager.SpendPoints(guiManager.buildButtons[0].cost);
             return bearTrapPrefab;
         }
         else if (buildSelected == thornsPrefab)
         {
+            gameManager.SpendPoints(guiManager.buildButtons[1].cost);
             return thornsPrefab;
         }
         else if (buildSelected == anvilTrapPrefab) // Anvil Trap option
         {
+            gameManager.SpendPoints(guiManager.buildButtons[2].cost);
             return anvilTrapPrefab;
         }
         else

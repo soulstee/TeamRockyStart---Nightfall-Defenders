@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     public float damage = 10f; // Damage dealt to the tower
 
     private float originalSpeed;
-    private Vector2 target;
+    public Vector2 target;
     private bool isDead = false;
     private bool inPool = false;
     private Transform targetTower; // Reference to the tower
