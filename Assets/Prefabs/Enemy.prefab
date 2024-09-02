@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3582434229858908595}
   - component: {fileID: -4507264109205373766}
   - component: {fileID: 2502192207707144463}
-  - component: {fileID: 4000950584785747335}
+  - component: {fileID: 5580994394259682855}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -148,7 +148,8 @@ MonoBehaviour:
   speed: 3
   health: 100
   damage: 10
---- !u!50 &4000950584785747335
+  target: {x: 0, y: 0}
+--- !u!50 &5580994394259682855
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

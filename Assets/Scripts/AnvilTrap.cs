@@ -5,10 +5,10 @@ using UnityEngine;
 public class AnvilTrap : MonoBehaviour
 {
     [Header("Trap Settings")]
-    public Sprite[] activeSprites; // Sprites to display when the trap is activated
-    public Sprite inactiveSprite;  // Sprite to display when the trap is inactive
+    public Sprite[] activeSprites;   // Sprites to display when the trap is activated
+    public Sprite inactiveSprite;    // Sprite to display when the trap is inactive
     public float activationDelay = 0.1f; // Delay between sprite changes during activation
-    public float rechargeTime = 5f; // Time it takes for the trap to recharge
+    public float rechargeTime = 5f;  // Time it takes for the trap to recharge
 
     private bool isActive = false;
     private SpriteRenderer spriteRenderer;
@@ -18,18 +18,24 @@ public class AnvilTrap : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         trapCollider = GetComponent<Collider2D>();
-        SetTrapInactive(); // Start with the trap inactive
+        SetTrapInactive();  // Start with the trap inactive
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isActive && other.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") && !isActive)
         {
-            StartCoroutine(ActivateTrap(other));
+            Debug.Log("Enemy collided with the trap.");
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                Debug.Log("Starting trap activation.");
+                StartCoroutine(ActivateTrap(enemy));
+            }
         }
     }
 
-    private IEnumerator ActivateTrap(Collider2D enemy)
+    private IEnumerator ActivateTrap(Enemy enemy)
     {
         isActive = true;
 
@@ -40,7 +46,7 @@ public class AnvilTrap : MonoBehaviour
             yield return new WaitForSeconds(activationDelay);
         }
 
-        // Deal damage to the enemy and any other close enemies
+        // Deal damage to the enemy
         DealDamage(enemy);
 
         // Set trap to inactive state
@@ -51,36 +57,23 @@ public class AnvilTrap : MonoBehaviour
 
         // Trap is ready to be activated again
         isActive = false;
-        spriteRenderer.sprite = activeSprites[0]; // Set to the first active sprite
+        trapCollider.enabled = true; // Enable the collider again after recharging
+        spriteRenderer.sprite = inactiveSprite;
     }
 
-    private void DealDamage(Collider2D enemy)
+    private void DealDamage(Enemy enemy)
     {
         // Apply damage to the main enemy
-        Enemy enemyComponent = enemy.GetComponent<Enemy>();
-        if (enemyComponent != null)
+        if (enemy != null)
         {
-            enemyComponent.TakeDamage(50f); // Example damage amount
-        }
-
-        // Check for other enemies close to the trap
-        Collider2D[] nearbyEnemies = Physics2D.OverlapCircleAll(transform.position, 1f);
-        foreach (Collider2D nearbyEnemy in nearbyEnemies)
-        {
-            if (nearbyEnemy.CompareTag("Enemy") && nearbyEnemy != enemy)
-            {
-                Enemy otherEnemy = nearbyEnemy.GetComponent<Enemy>();
-                if (otherEnemy != null)
-                {
-                    otherEnemy.TakeDamage(25f); // Deal less damage to nearby enemies
-                }
-            }
+            enemy.TakeDamage(150f); // Example damage amount
         }
     }
 
     private void SetTrapInactive()
     {
         spriteRenderer.sprite = inactiveSprite; // Set to the inactive sprite
-        trapCollider.enabled = false;          // Disable the collider while inactive
+        trapCollider.enabled = true;            // Keep collider enabled
+        isActive = false;                       // Trap is inactive by default
     }
 }
