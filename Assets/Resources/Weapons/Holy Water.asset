@@ -20,3 +20,4 @@ MonoBehaviour:
   fireRate: 5
   level: 1
   projectile: {fileID: 4842892275183878764, guid: 036cdcf6e8ec3ec4f816c76d72ffa893, type: 3}
+  shoot: {fileID: 8300000, guid: 2e6101c1ae4c63142a1483dee0eb66bd, type: 3}

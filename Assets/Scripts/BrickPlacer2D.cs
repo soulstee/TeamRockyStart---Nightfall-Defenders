@@ -83,7 +83,10 @@ public class BrickPlacer2D : MonoBehaviour
         {
             if(GameManager.instance.AffordablePurchaseCheck(buildSelected.GetComponent<Block>().cost)){
                 GameManager.instance.UpdatePoints(-buildSelected.GetComponent<Block>().cost);
+                AudioManager.instance.PlayNoise("Place");
+                GameManager.instance.shootScript.animator.SetTrigger("Build");
             }else{
+                GameManager.instance.ChangeToDefaultMode();
                 return;
             }
             

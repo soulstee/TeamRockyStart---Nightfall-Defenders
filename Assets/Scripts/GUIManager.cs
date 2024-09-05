@@ -149,7 +149,6 @@ public class GUIManager : MonoBehaviour
         if (brickPlacer != null)
         {
             BrickPlacer2D.buildSelected = itemPrefab;
-            Debug.Log(itemPrefab.name + " selected.");
         }
         else
         {

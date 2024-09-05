@@ -10,7 +10,8 @@ public class PlayerShoot : MonoBehaviour
 
     public Transform firePoint;
 
-    private Animator animator;
+    [HideInInspector]
+    public Animator animator;
 
     private void Awake(){
         Weapon[] temp = Resources.LoadAll<Weapon>("Weapons");
@@ -36,7 +37,7 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButton(0) && MouseController.mouseMode == MouseController.MouseMode.Default && Time.time >= nextFireTime && !GameManager.waveEnded)
+        if (MouseController.mouseMode == MouseController.MouseMode.Default && Input.GetMouseButton(0) && Time.time >= nextFireTime && !GameManager.waveEnded)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Shoot(mousePosition);
@@ -58,6 +59,7 @@ public class PlayerShoot : MonoBehaviour
         if(weapons[_id].isUnlocked){
             currentWeapon = weapons[_id];
             GameManager.instance.gui.UpdateWeaponSlot(_id);
+            animator.SetInteger("CurrentWeapon", _id+1);
         }else{
             //Show locked something
         }
@@ -65,8 +67,9 @@ public class PlayerShoot : MonoBehaviour
 
     private void Shoot(Vector2 mousePos){
         if(firePoint != null){
-            animator.Play("Bow_Fire");
-
+            animator.SetTrigger("Fire");
+            
+            AudioManager.instance.PlaySetNoise(currentWeapon.shoot);
             GameObject proj = Instantiate(currentWeapon.projectile, firePoint.transform.position, Quaternion.identity);
             Vector2 dir = (mousePos-(Vector2)firePoint.transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

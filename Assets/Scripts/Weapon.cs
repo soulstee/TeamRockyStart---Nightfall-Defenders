@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [CreateAssetMenu]
 public class Weapon : ScriptableObject
@@ -13,6 +14,7 @@ public class Weapon : ScriptableObject
     public float fireRate;
     public int level = 1;
     public GameObject projectile;
+    public AudioClip shoot;
 
     private void Start(){
         level = 1;

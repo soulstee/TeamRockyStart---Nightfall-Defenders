@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public GridManager2D gridManager;
     public BrickPlacer2D brickPlacer;
+    public PlayerShoot shootScript;
     public GUIManager gui;
 
     public static bool waveEnded = true;

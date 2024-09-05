@@ -14,6 +14,10 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI loadingText;
     public Image progressBar;
 
+    private void Start(){
+        AudioManager.instance.PlayNoise("Menu");
+    }
+
     public void Quit(){
         Application.Quit();
     }
