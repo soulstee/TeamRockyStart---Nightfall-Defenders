@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3582434229858908595}
   - component: {fileID: -4507264109205373766}
   - component: {fileID: 2502192207707144463}
-  - component: {fileID: 5580994394259682855}
+  - component: {fileID: 4000950584785747335}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -144,11 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e1befced7a204468e7bd7693058b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   speed: 3
   health: 10
   damage: 10
   pointsOnDeath: 10
+  timeDisturbed: 5
+  target: {x: 0, y: 0}
 --- !u!50 &4000950584785747335
 Rigidbody2D:
   serializedVersion: 4
