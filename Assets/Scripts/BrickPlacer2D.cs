@@ -81,6 +81,12 @@ public class BrickPlacer2D : MonoBehaviour
 
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
+            if(GameManager.instance.AffordablePurchaseCheck(buildSelected.GetComponent<Block>().cost)){
+                GameManager.instance.UpdatePoints(-buildSelected.GetComponent<Block>().cost);
+            }else{
+                return;
+            }
+            
             Instantiate(buildSelected, gridPosition, Quaternion.identity);
             gridManager.SetCellOccupied(gridCoords, true);
 
