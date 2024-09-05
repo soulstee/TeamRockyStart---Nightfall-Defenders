@@ -5,9 +5,8 @@ using UnityEngine;
 public class BrickPlacer2D : MonoBehaviour
 {
     [Header("Prefab Settings")]
-    public GameObject bearTrapPrefab;   // For bear trap
-    public GameObject thornsPrefab;     // For thorns
-    public GameObject anvilTrapPrefab;  // For anvil trap
+    public static GameObject currentBuildPrefab;
+    public GameObject[] buildingBlocks;// For anvil trap
     public GameObject occupiedCircle;   // Visual indicator for occupied spaces
 
     [Header("References")]
@@ -82,43 +81,14 @@ public class BrickPlacer2D : MonoBehaviour
 
         if (gridManager.IsWithinBounds(gridCoords) && !gridManager.IsCellOccupied(gridCoords))
         {
-            GameObject itemToPlace = GetItemToPlace();
+            Instantiate(buildSelected, gridPosition, Quaternion.identity);
+            gridManager.SetCellOccupied(gridCoords, true);
 
-            if (itemToPlace != null)
-            {
-                Instantiate(itemToPlace, gridPosition, Quaternion.identity);
-                gridManager.SetCellOccupied(gridCoords, true);
-
-                GameManager.instance.ChangeToDefaultMode();
-            }
-            else
-            {
-                Debug.LogWarning("No valid item selected.");
-            }
+            GameManager.instance.ChangeToDefaultMode();
         }
         else
         {
             Debug.LogWarning("Cannot place item here. Position is either out of bounds or already occupied.");
-        }
-    }
-
-    private GameObject GetItemToPlace()
-    {
-        if (buildSelected == bearTrapPrefab)
-        {
-            return bearTrapPrefab;
-        }
-        else if (buildSelected == thornsPrefab)
-        {
-            return thornsPrefab;
-        }
-        else if (buildSelected == anvilTrapPrefab) // Anvil Trap option
-        {
-            return anvilTrapPrefab;
-        }
-        else
-        {
-            return null;
         }
     }
 

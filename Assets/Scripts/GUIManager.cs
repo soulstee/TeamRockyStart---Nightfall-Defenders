@@ -187,6 +187,7 @@ public class BuildSlot
 
     public void Initialize(int _id)
     {
+        cost = GameManager.instance.brickPlacer.buildingBlocks[_id].GetComponent<Block>().cost;
         priceText.text = "$" + cost.ToString();
     }
 }

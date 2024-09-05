@@ -95,13 +95,13 @@ public class GameManager : MonoBehaviour
         return playerPoints;
     }
 
-    public void AffordablePurchaseCheck(int price)
+    public bool AffordablePurchaseCheck(int price)
     {
         if(playerPoints < price)
         {
-            ChangeToDefaultMode();
-            Debug.Log("Cannot afford this purchase!");
+            return false;
         }
+        return true;
     }
 
     public void SpendPoints(int amount)
