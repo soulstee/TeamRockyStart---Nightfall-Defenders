@@ -19,4 +19,4 @@ MonoBehaviour:
   damage: 20
   fireRate: 3
   level: 1
-  projectile: {fileID: 4842892275183878764, guid: 44f578d6189d4d34ab40c17670f65a52, type: 3}
+  projectile: {fileID: 4842892275183878764, guid: 5cb455d18f1710042bde64ae0ba1df8f, type: 3}

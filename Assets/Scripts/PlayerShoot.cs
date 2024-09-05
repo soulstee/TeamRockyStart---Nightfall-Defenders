@@ -73,7 +73,12 @@ public class PlayerShoot : MonoBehaviour
 
             proj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-            proj.GetComponent<Projectile>().Initialize(currentWeapon.damage*currentWeapon.level, currentWeapon.speed*currentWeapon.level, dir);
+            if(proj.GetComponent<Projectile>() != null){
+                proj.GetComponent<Projectile>().Initialize(currentWeapon.damage*currentWeapon.level, currentWeapon.speed*currentWeapon.level, dir);
+            }
+            else if(proj.GetComponent<HolyWaterProjectile>() != null){
+                proj.GetComponent<HolyWaterProjectile>().Initialize(currentWeapon.damage*currentWeapon.level, currentWeapon.speed*currentWeapon.level, dir);
+            }
         }
     }
 }

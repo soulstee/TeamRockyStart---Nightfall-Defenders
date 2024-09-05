@@ -7,6 +7,23 @@ public class HolyWaterProjectile : MonoBehaviour
     public float baseDamage;     // Base damage when hitting an enemy directly
     public float splashRadius;    // How big the splash damage area is
     public float splashDamage;   // How much damage the splash does
+    private float speed;
+    public float TimeToDestroy = 10f;
+    Vector3 direction;
+
+    public void Initialize(float _damage, float _speed, Vector3 dir){
+        baseDamage = _damage;
+        speed = _speed;
+        direction = dir;
+    }
+
+    private void Update(){
+        transform.position += direction * speed * Time.deltaTime;
+    }
+
+    private void Start(){
+        Destroy(this.gameObject, TimeToDestroy);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

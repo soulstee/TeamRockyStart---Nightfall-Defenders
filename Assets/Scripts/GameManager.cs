@@ -80,6 +80,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Finished level.");
     }
 
+    public void ResetGame(){
+        waveEnded = true;
+        waveCurrentTime = 0;
+        gui.waveText.text = "Preparation Phase";
+        currentWaveNum = 0;
+    }
+
     public void ChangeToBuildMode(){
         MouseController.mouseMode = MouseController.MouseMode.Build;
         brickPlacer.CheckOpenPlacements();
