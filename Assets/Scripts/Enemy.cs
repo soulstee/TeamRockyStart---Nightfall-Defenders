@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     {
         Zombie = 0,
         Wolf,
-        Vampire,
+        Ghost,
     }
 
     public TypeOfEnemy type;

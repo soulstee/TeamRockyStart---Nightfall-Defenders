@@ -10,7 +10,6 @@ public class PlayerShoot : MonoBehaviour
 
     public Transform firePoint;
 
-    [HideInInspector]
     public Animator animator;
 
     private void Awake(){
