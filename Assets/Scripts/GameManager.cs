@@ -23,19 +23,12 @@ public class GameManager : MonoBehaviour
 
     public static float waveCurrentTime = 0;
 
-    public static int playerPoints = 0;
-
-    public int initialPoints;
-    //How many points the player should start with. Adjustable in the inspector.
+    public static int playerPoints = 100;
 
     private void Awake()
     {
         instance = this;
         gui = GetComponent<GUIManager>();
-    }
-
-    private void Start(){
-        
     }
 
     private void Update(){
@@ -52,6 +45,7 @@ public class GameManager : MonoBehaviour
         playerPoints += points;
 
         gui.UpdatePointsText();
+        gui.PointVisual(points);
     }
 
     public void StartWave(){
@@ -110,14 +104,5 @@ public class GameManager : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    public void SpendPoints(int amount)
-    {
-        if (playerPoints >= amount)
-        {
-            playerPoints -= amount;
-            gui.UpdatePointsText(); // Update UI here
-        }
     }
 }
