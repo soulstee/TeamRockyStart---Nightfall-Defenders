@@ -500,11 +500,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 372480431}
   spawnInterval: 3
-  currentEnemyCount: 0
+  currentEnemyCount: 10
   enemyPrefab:
   - {fileID: 5548287821386657910, guid: 7271e8c8a42d99241a0e81b22fbe5cdf, type: 3}
   - {fileID: 630812725782946540, guid: 2285a6ae03d024645a63d8915ee32d65, type: 3}
-  - {fileID: 5548287821386657910, guid: 7271e8c8a42d99241a0e81b22fbe5cdf, type: 3}
+  - {fileID: 8538700627771551146, guid: df471b52e97ba2f4ea2b0f0bf74d3c20, type: 3}
   currentEnemies: []
 --- !u!4 &372480431
 Transform:
@@ -680,7 +680,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c74e12f5d7025aa4286e09da964cca23, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6b9036cc72f2a141ac1d203340c3461, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -700,8 +700,8 @@ Transform:
   m_GameObject: {fileID: 404668374}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.8184, y: 5.41, z: 0}
-  m_LocalScale: {x: 13.33636, y: 16.38173, z: 1}
+  m_LocalPosition: {x: 13.1182, y: 5.23, z: 0}
+  m_LocalScale: {x: 0.6241914, y: 0.763042, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -765,18 +765,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.30608913, y: -0.04217661}
+  m_Offset: {x: 2.6281548, y: -0.7039466}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 0.75}
+    oldSize: {x: 20.48, y: 15.36}
     newSize: {x: 1.17, y: 1.55}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.38782173, y: 0.57872874}
+  m_Size: {x: 15.15917, y: 12.441543}
   m_EdgeRadius: 0
 --- !u!1 &481104606 stripped
 GameObject:
@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1438490161}
-  animator: {fileID: 0}
+  animator: {fileID: 1654764726}
 --- !u!1 &2006712822 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5851168461763750681, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
@@ -1281,7 +1281,7 @@ PrefabInstance:
     - target: {fileID: 754933549381129083, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1654764728}
+      objectReference: {fileID: 0}
     - target: {fileID: 1111501227195015902, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_Name
       value: GameUICanvas
@@ -1289,7 +1289,7 @@ PrefabInstance:
     - target: {fileID: 1173290158377433138, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1654764728}
+      objectReference: {fileID: 0}
     - target: {fileID: 1396760195710024312, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_Type
       value: 0
@@ -1469,7 +1469,7 @@ PrefabInstance:
     - target: {fileID: 5585182577571071464, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1654764728}
+      objectReference: {fileID: 0}
     - target: {fileID: 6047721409516104737, guid: ddbc67b4590cdf74a98ed5c5f0cfb06c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 687.87
