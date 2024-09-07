@@ -63,7 +63,6 @@ public class BrickPlacer2D : MonoBehaviour
                     if (!gridManager.occupiedCells[x, y])
                     {
                         gridOccupiedCircles[x, y].SetActive(true);
-                        Debug.Log("GOON1");
                     }
                     else
                     {

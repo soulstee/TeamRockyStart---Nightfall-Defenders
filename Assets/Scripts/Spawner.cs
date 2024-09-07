@@ -18,7 +18,7 @@ public class Spawner : MonoBehaviour
     [HideInInspector]
     public static Enemy[] currentEnemies;
 
-    private int[] enemiesToSpawn;
+    private int[] enemiesToSpawn = new int[3];
     private int totalEnemiesSpawned;
 
     private void Start(){
@@ -27,7 +27,6 @@ public class Spawner : MonoBehaviour
 
     public void SpawnWave(){
         currentEnemies = new Enemy[GameManager.currentWave.totalEnemies];
-        enemiesToSpawn = GameManager.currentWave.enemiesID;
         spawnInterval = GameManager.currentWave.spawnInterval;
     }
 
@@ -58,21 +57,6 @@ public class Spawner : MonoBehaviour
     private int FindEnemyToSpawn(){
         // Ensure the random index is within the bounds of enemiesToSpawn array
         int r = Random.Range(0, enemiesToSpawn.Length);
-        
-        bool[] validSpawns = new bool[enemiesToSpawn.Length];
-        for(int i = 0; i < enemiesToSpawn.Length; i++){
-            validSpawns[i] = enemiesToSpawn[i] > 0;
-        }
-
-        // Try to find a valid spawn based on random selection
-        for (int i = 0; i < validSpawns.Length; i++) {
-            if (validSpawns[i]) {
-                int yn = Random.Range(0, 2);
-                if (yn == 0) {
-                    return i;
-                }
-            }
-        }
 
         return r;  // Return the random index found earlier if no other spawn was valid
     }
@@ -100,21 +84,18 @@ public class Spawner : MonoBehaviour
     {
         if (!GameManager.waveEnded){
             spawnIntervalTime += Time.deltaTime;
-
-            // Modifies spawn time slightly by time in wave (change later)
-            spawnTimeModifier = 1 + GameManager.waveCurrentTime / 500;
         }
 
         // Spawns enemies at the spawnInterval variable
         // Ends section when wave time is up and enemies are dead
-        if (spawnIntervalTime >= spawnInterval / spawnTimeModifier && !GameManager.waveEnded && totalEnemiesSpawned < GameManager.currentWave.totalEnemies)
+        if (spawnIntervalTime >= spawnInterval && !GameManager.waveEnded && totalEnemiesSpawned < GameManager.currentWave.totalEnemies)
         {
             spawnIntervalTime = 0;
             // Spawn Enemy function here
             SpawnEnemy();
         }
 
-        if (!GameManager.waveEnded && GameManager.waveCurrentTime > GameManager.currentWave.waveTime && currentEnemyCount == 0 && totalEnemiesSpawned == GameManager.currentWave.totalEnemies)
+        if (!GameManager.waveEnded && GameManager.waveCurrentTime > GameManager.currentWave.waveTime && totalEnemiesSpawned >= GameManager.currentWave.totalEnemies && currentEnemyCount <= 0)
         {
             GameManager.instance.EndWave();
 

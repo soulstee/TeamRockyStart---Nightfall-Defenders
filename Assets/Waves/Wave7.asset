@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Wave7
   m_EditorClassIdentifier: 
   waveNumber: 7
-  enemiesID: 060000000600000000000000
-  totalEnemies: 12
-  spawnInterval: 4
-  waveTime: 48
+  totalEnemies: 10
+  spawnInterval: 1
+  waveTime: 5

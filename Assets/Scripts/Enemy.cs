@@ -125,14 +125,8 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        for (int i = 0; i < Spawner.currentEnemies.Length; i++)
-        {
-            if (Spawner.currentEnemies[i] == this)
-            {
-                spawner.currentEnemyCount--;
-            }
-        }
         GameManager.instance.UpdatePoints(pointsOnDeath);
+        spawner.currentEnemyCount--;
         Destroy(this.gameObject);
 
         if(type == TypeOfEnemy.Wolf){

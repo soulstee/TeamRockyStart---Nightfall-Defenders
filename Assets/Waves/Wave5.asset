@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Wave5
   m_EditorClassIdentifier: 
   waveNumber: 5
-  enemiesID: 0d0000000400000001000000
-  totalEnemies: 18
-  spawnInterval: 4
-  waveTime: 72
+  totalEnemies: 15
+  spawnInterval: 1.5
+  waveTime: 5
