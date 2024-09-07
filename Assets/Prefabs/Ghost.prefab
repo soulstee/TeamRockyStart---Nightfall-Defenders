@@ -183,10 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e1befced7a204468e7bd7693058b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
-  speed: 7
-  health: 50
-  damage: 30
+  type: 2
+  speed: 1.4
+  health: 5
+  damage: 2
   pointsOnDeath: 10
   timeDisturbed: 5
+  attackRate: 0.7
   target: {x: 0, y: 0}

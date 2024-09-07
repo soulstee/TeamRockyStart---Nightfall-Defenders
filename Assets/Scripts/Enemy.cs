@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; // Include this line to access Unity classes
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,11 +12,12 @@ public class Enemy : MonoBehaviour
     }
 
     public TypeOfEnemy type;
-    public float speed = 5f;
-    public float health = 100f;
-    public float damage = 10f; // Damage dealt to the tower
-    public int pointsOnDeath = 10;
-    public float timeDisturbed = 5f;
+    public float speed;
+    public float health;
+    public float damage; // Damage dealt to the tower
+    public int pointsOnDeath;
+    public float timeDisturbed;
+    public float attackRate; // Attacks per second
 
     bool disturbed;
     float waveTimeSave;
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
     private Transform targetTower; // Reference to the tower
     private Spawner spawner;
     private Animator anim;
+    private bool isAttacking = false; // Tracks if the enemy is attacking the tower
 
     private void Start()
     {
@@ -78,24 +80,31 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        health-=damageAmount;
+        health -= damageAmount;
 
-        if(health<=0){
+        if (health <= 0)
+        {
             Die();
-        }else{
+        }
+        else
+        {
             Hit();
         }
     }
 
-    public void Hit(){
+    public void Hit()
+    {
         anim.SetTrigger("Hit");
         waveTimeSave = GameManager.waveCurrentTime;
         disturbed = true;
     }
 
-    private void Die(){
-        for(int i = 0; i < spawner.currentEnemies.Length; i++){
-            if(spawner.currentEnemies[i] == this){
+    private void Die()
+    {
+        for (int i = 0; i < spawner.currentEnemies.Length; i++)
+        {
+            if (spawner.currentEnemies[i] == this)
+            {
                 spawner.currentEnemyCount--;
             }
         }
@@ -115,26 +124,31 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Tower"))
+        if (other.CompareTag("Tower") && !isAttacking)
         {
-            AttackTower(); // Attack the tower
+            StartCoroutine(AttackTower()); // Start attacking the tower
         }
     }
 
-    private void AttackTower()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (targetTower != null)
+        if (other.CompareTag("Tower"))
         {
-            Tower tower = targetTower.GetComponent<Tower>();
-            if (tower != null)
-            {
-                tower.TakeDamage(damage); // Inflict damage on the tower
-                Debug.Log("Attacking tower with " + damage + " damage.");
-            }
-            else
-            {
-                Debug.LogError("Tower component not found on the target tower.");
-            }
+            StopCoroutine(AttackTower()); // Stop attacking when leaving the tower range
+            isAttacking = false;
+        }
+    }
+
+    private IEnumerator AttackTower()
+    {
+        isAttacking = true;
+        Tower tower = targetTower.GetComponent<Tower>();
+
+        while (isAttacking && tower != null)
+        {
+            tower.TakeDamage(damage); // Inflict damage on the tower
+            Debug.Log("Attacking tower with " + damage + " damage.");
+            yield return new WaitForSeconds(1f / attackRate); // Attack based on attack rate
         }
     }
 }
