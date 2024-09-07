@@ -15,8 +15,8 @@ MonoBehaviour:
   name: Crossbow
   weaponId: 1
   isUnlocked: 1
-  speed: 10
-  damage: 20
+  speed: 20
+  damage: 40
   fireRate: 3
   level: 1
   projectile: {fileID: 4842892275183878764, guid: 5cb455d18f1710042bde64ae0ba1df8f, type: 3}

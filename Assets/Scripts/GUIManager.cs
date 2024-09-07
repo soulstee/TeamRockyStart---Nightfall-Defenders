@@ -20,6 +20,7 @@ public class GUIManager : MonoBehaviour
 
     [Header("UI Stuff")]
     public TextMeshProUGUI pointsText;
+    public TextMeshProUGUI pointsTextUpdate;
     public TextMeshProUGUI waveText;
     public GameObject startWaveButton;
     public Image towerHealthBar;
@@ -80,6 +81,20 @@ public class GUIManager : MonoBehaviour
         CheckAllUIUpdate(GameManager.playerPoints);
     }
 
+    public void PointVisual(int point){
+        if(point < 0){
+            pointsTextUpdate.color = Color.red;
+            pointsTextUpdate.text = "-" + point.ToString();
+        }else if(point >= 0){
+            pointsTextUpdate.color = Color.green;
+            pointsTextUpdate.text = "+" + point.ToString();
+        }
+
+        AudioManager.instance.PlayNoise("Purchase");
+
+        pointsTextUpdate.gameObject.GetComponent<Animator>().SetTrigger("Visual");
+    }
+
     private void CheckAllUIUpdate(int _points)
     {
         // Implementation here if needed
@@ -105,7 +120,7 @@ public class GUIManager : MonoBehaviour
             return;
         }
 
-        GameManager.instance.SpendPoints(slots[_id].cost); // Use SpendPoints method
+        GameManager.instance.UpdatePoints(-slots[_id].cost);
 
         slots[_id].unlocked = true;
     }
@@ -126,7 +141,7 @@ public class GUIManager : MonoBehaviour
         if (GameManager.playerPoints >= _tempSlot.cost)
         {
             _tempSlot.unlocked = true;
-            GameManager.instance.SpendPoints(_tempSlot.cost); // Use SpendPoints method
+            GameManager.instance.UpdatePoints(-_tempSlot.cost); // Use SpendPoints method
             PlayerShoot.weapons[_id].level = slots[_id].currentLevel;
             UpdateUpgradeSlots(_id);
         }

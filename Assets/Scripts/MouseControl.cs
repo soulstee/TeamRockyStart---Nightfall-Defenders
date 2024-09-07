@@ -66,16 +66,6 @@ public class MouseController : MonoBehaviour
                     break;
             }
         }
-
-        // Toggle grid indicators with TAB key
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            showGridIndicators = !showGridIndicators;
-            if (brickPlacer != null)
-            {
-                brickPlacer.SetGridVisibility(showGridIndicators);
-            }
-        }
     }
 
     private void HandleGridVisibility()

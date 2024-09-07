@@ -100,15 +100,4 @@ public class BrickPlacer2D : MonoBehaviour
             Debug.LogWarning("Cannot place item here. Position is either out of bounds or already occupied.");
         }
     }
-
-    public void SetGridVisibility(bool visible)
-    {
-        for (int x = 0; x < gridManager.gridWidth; x++)
-        {
-            for (int y = 0; y < gridManager.gridHeight; y++)
-            {
-                gridOccupiedCircles[x, y].SetActive(visible);
-            }
-        }
-    }
 }
