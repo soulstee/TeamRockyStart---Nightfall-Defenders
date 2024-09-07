@@ -31,6 +31,7 @@ public class Projectile : MonoBehaviour
 
             enemy.TakeDamage(damage);
 
+            PlayerShoot.projectiles.Remove(this.gameObject);
             Destroy(this.gameObject);
         }
 

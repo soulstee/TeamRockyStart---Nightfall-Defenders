@@ -10,17 +10,21 @@ public class BrickPlacer2D : MonoBehaviour
     public GameObject occupiedCircle;   // Visual indicator for occupied spaces
 
     [Header("References")]
-    private GridManager2D gridManager; // Reference to GridManager2D
+    public GridManager2D gridManager; // Reference to GridManager2D
 
     private GameObject[,] gridOccupiedCircles; // Track occupied circles
 
     // Static reference for the item to place
     public static GameObject buildSelected;
 
+    public static GameObject[] builtBlocks = new GameObject[15];
+    private int currentIndex = 0;
+
     private void Start()
     {
         gridManager = GetComponent<GridManager2D>();
         gridOccupiedCircles = new GameObject[gridManager.gridWidth, gridManager.gridHeight];
+        Debug.Log(gridOccupiedCircles.Length);
 
         // Create occupation circle graphics
         for (int x = 0; x < gridManager.gridWidth; x++)
@@ -59,6 +63,7 @@ public class BrickPlacer2D : MonoBehaviour
                     if (!gridManager.occupiedCells[x, y])
                     {
                         gridOccupiedCircles[x, y].SetActive(true);
+                        Debug.Log("GOON1");
                     }
                     else
                     {
@@ -67,10 +72,14 @@ public class BrickPlacer2D : MonoBehaviour
                 }
             }
         }
-        else if (MouseController.mouseMode == MouseController.MouseMode.Upgrade)
-        {
-            // Put upgrade visual here
+    }
+
+    public void Reset(){
+        foreach(GameObject g in builtBlocks){
+            Destroy(g);
         }
+
+        currentIndex = 0;
     }
 
     public void PlaceItem()
@@ -90,7 +99,8 @@ public class BrickPlacer2D : MonoBehaviour
                 return;
             }
             
-            Instantiate(buildSelected, gridPosition, Quaternion.identity);
+            builtBlocks[currentIndex] = Instantiate(buildSelected, gridPosition, Quaternion.identity);
+            currentIndex++;
             gridManager.SetCellOccupied(gridCoords, true);
 
             GameManager.instance.ChangeToDefaultMode();

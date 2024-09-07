@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6910882513924115112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2426288288288046455}
+  - component: {fileID: 5077190004008549764}
+  - component: {fileID: 7494084619162316019}
+  m_Layer: 0
+  m_Name: Grid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2426288288288046455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910882513924115112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5077190004008549764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910882513924115112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99bfa3a434944854db0b25d42fedb5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingBlocks:
+  - {fileID: 4975181167784867436, guid: 17a36c64e62aece48912ab1fccf0a562, type: 3}
+  - {fileID: 5512639664323736653, guid: e1cd7a4e53009f548b8e2e7b933003f7, type: 3}
+  - {fileID: 5514395385716567618, guid: 3c9359cd5525adb4dbdb7bc8550ff824, type: 3}
+  occupiedCircle: {fileID: 7199167316899595284, guid: 5d86eed1fa1aa644b81d76fe8b6a0def, type: 3}
+--- !u!114 &7494084619162316019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910882513924115112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c6bf333c3f3a4b4fac7d2a6205ffbaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridOrigin: {x: 7.36, y: 0}
+  gridWidth: 3
+  gridHeight: 5
+  gridHeightOffset: 5.91
+  cellSize: 1
+  showGrid: 1
+  gridColor: {r: 1, g: 0.4828682, b: 0, a: 1}
+  brickPlacer: {fileID: 0}

@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
 
     public GameObject[] enemyPrefab;
     [HideInInspector]
-    public Enemy[] currentEnemies;
+    public static Enemy[] currentEnemies;
 
     private int[] enemiesToSpawn;
     private int totalEnemiesSpawned;
@@ -79,8 +79,8 @@ public class Spawner : MonoBehaviour
 
     private Vector2 FindRandomSpawnPos(){
         // Chooses random position to spawn enemies (gives a less linear look to enemy pathing)
-        float spawnOriginX = (int)spawner.position.x * gridManager.cellSize;
-        float randSpawnY = (int)(Random.Range(0, gridManager.gridHeight + 1) / 2) * gridManager.cellSize + gridManager.gridOrigin.y;
+        float spawnOriginX = -7;
+        float randSpawnY = (int)(Random.Range(0, gridManager.gridHeight + 1)) * gridManager.cellSize + gridManager.gridOrigin.y;
 
         return new Vector2(spawnOriginX, randSpawnY);
     }

@@ -11,66 +11,50 @@ public class MouseController : MonoBehaviour
         Upgrade,
     }
 
-    public static MouseMode mouseMode;
+    public static MouseMode mouseMode = MouseMode.Default;
 
     [Header("References")]
     public BrickPlacer2D brickPlacer;
-
-    private bool showGridIndicators = false;
+    public PlayerShoot playerShoot;
 
     private void Update()
     {
         HandleInput();
-        HandleGridVisibility();
     }
+
+    private float nextFireTime;
 
     private void HandleInput()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = new RaycastHit2D(); // Ensure hit is always initialized
-
-        if (mouseMode == MouseMode.Default)
-            hit = Physics2D.Raycast(mousePos, Vector3.right);
-
-        bool mouseOverEnemy = false;
-        Enemy enemy = null;
-
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
-        {
-            mouseOverEnemy = true;
-            enemy = hit.collider.GetComponent<Enemy>();
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             switch (mouseMode)
             {
                 case MouseMode.Default:
-                    if (enemy != null)
-                    {
-                        // Fire weapon here and deal damage to the enemy
-                        
+
+                    if(Time.time <= nextFireTime || GameManager.waveEnded){
+                        return;
                     }
+
+                    Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                    if(mousePosition.y > -0.8){
+                        playerShoot.Shoot(mousePosition);
+                        nextFireTime = Time.time + PlayerShoot.currentWeapon.fireRate;
+                    }
+
                     break;
 
                 case MouseMode.Build:
                     // Call PlaceItem instead of PlaceBlock
-                    if (brickPlacer != null)
+                    Vector2 mousePositionY = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    if (brickPlacer != null && mousePositionY.y > -0.8)
                     {
                         brickPlacer.PlaceItem();
                     }
                     break;
-
-                case MouseMode.Upgrade:
-                    // Implement upgrade functionality here if needed
-                    break;
             }
         }
-    }
-
-    private void HandleGridVisibility()
-    {
-        // Additional code to handle other aspects of grid visibility, if necessary
     }
 
     public void ChangeToBuildMode()

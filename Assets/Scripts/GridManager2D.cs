@@ -23,7 +23,7 @@ public class GridManager2D : MonoBehaviour
     [HideInInspector]
     public bool[,] occupiedCells;             // Tracks occupied cells
 
-    void Start()
+    void Awake()
     {
         brickPlacer = GetComponent<BrickPlacer2D>();
         InitializeGrid();

@@ -94,22 +94,54 @@ public class Enemy : MonoBehaviour
 
     public void Hit()
     {
+        if(anim == null){return;}
+
         anim.SetTrigger("Hit");
         waveTimeSave = GameManager.waveCurrentTime;
         disturbed = true;
+
+        //Plays sounds half the time to not get annoying
+        int rSound = (int)Random.Range(0,2);
+
+        if(type == TypeOfEnemy.Wolf && rSound == 0){
+            int r = (int)Random.Range(0,3);
+            switch(r){
+                case 0:
+                    AudioManager.instance.PlayNoise("WolfHit1");
+                    break;
+                case 1:
+                    AudioManager.instance.PlayNoise("WolfHit2");
+                    break;
+                case 2:
+                    AudioManager.instance.PlayNoise("WolfHit3");
+                    break;
+            }
+        }else if(type == TypeOfEnemy.Ghost && rSound == 0){
+
+        }else if(type == TypeOfEnemy.Zombie && rSound == 0){
+            AudioManager.instance.PlayNoise("ZombieHit");
+        }
     }
 
     private void Die()
     {
-        for (int i = 0; i < spawner.currentEnemies.Length; i++)
+        for (int i = 0; i < Spawner.currentEnemies.Length; i++)
         {
-            if (spawner.currentEnemies[i] == this)
+            if (Spawner.currentEnemies[i] == this)
             {
                 spawner.currentEnemyCount--;
             }
         }
         GameManager.instance.UpdatePoints(pointsOnDeath);
         Destroy(this.gameObject);
+
+        if(type == TypeOfEnemy.Wolf){
+            AudioManager.instance.PlayNoise("WolfDeath");
+        }else if(type == TypeOfEnemy.Ghost){
+            AudioManager.instance.PlayNoise("GhostDeath");
+        }else if(type == TypeOfEnemy.Zombie){
+
+        }
     }
 
     public void SetSpeed(float newSpeed)
@@ -147,7 +179,6 @@ public class Enemy : MonoBehaviour
         while (isAttacking && tower != null)
         {
             tower.TakeDamage(damage); // Inflict damage on the tower
-            Debug.Log("Attacking tower with " + damage + " damage.");
             yield return new WaitForSeconds(1f / attackRate); // Attack based on attack rate
         }
     }

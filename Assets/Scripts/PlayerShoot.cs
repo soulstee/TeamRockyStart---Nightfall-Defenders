@@ -12,6 +12,8 @@ public class PlayerShoot : MonoBehaviour
 
     public Animator animator;
 
+    public static List<GameObject> projectiles = new List<GameObject>();
+
     private void Awake(){
         Weapon[] temp = Resources.LoadAll<Weapon>("Weapons");
 
@@ -22,6 +24,10 @@ public class PlayerShoot : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    public void ResetWeapon(){
+        ChangeWeapon(0);
+    }
+
     private void Start(){
         for(int i = 0; i < weapons.Count; i++){
             weapons[i].level = 1;
@@ -29,18 +35,9 @@ public class PlayerShoot : MonoBehaviour
         ChangeWeapon(0);
     }
 
-    private float nextFireTime = 0f;
-
     private void Update(){
         if(GameManager.waveEnded){
             return;
-        }
-
-        if (MouseController.mouseMode == MouseController.MouseMode.Default && Input.GetMouseButton(0) && Time.time >= nextFireTime && !GameManager.waveEnded)
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Shoot(mousePosition);
-            nextFireTime = Time.time + currentWeapon.fireRate;
         }
 
         if(Input.GetKeyDown(KeyCode.Tab) && MouseController.mouseMode == MouseController.MouseMode.Default){
@@ -64,12 +61,13 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void Shoot(Vector2 mousePos){
+    public void Shoot(Vector2 mousePos){
         if(firePoint != null){
             animator.SetTrigger("Fire");
             
             AudioManager.instance.PlaySetNoise(currentWeapon.shoot);
             GameObject proj = Instantiate(currentWeapon.projectile, firePoint.transform.position, Quaternion.identity);
+            projectiles.Add(proj);
             Vector2 dir = (mousePos-(Vector2)firePoint.transform.position).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 

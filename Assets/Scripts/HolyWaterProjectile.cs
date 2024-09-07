@@ -34,6 +34,7 @@ public class HolyWaterProjectile : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
+                AudioManager.instance.PlayNoise("HolyHit");
                 enemy.TakeDamage(baseDamage);
             }
 
@@ -41,6 +42,7 @@ public class HolyWaterProjectile : MonoBehaviour
             ApplySplashDamage();
             
             // Destroy the projectile after hitting the enemy
+            PlayerShoot.projectiles.Remove(this.gameObject);
             Destroy(gameObject);
         }
         // Destroy the projectile if it hits the ground or anything other than the Tower

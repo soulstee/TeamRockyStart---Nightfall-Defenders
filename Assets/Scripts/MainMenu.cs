@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public string waveScene;
 
     public GameObject loadingScreen;
+    public GameObject mainScreen;
 
     public TextMeshProUGUI loadingText;
     public Image progressBar;
@@ -24,6 +25,10 @@ public class MainMenu : MonoBehaviour
 
     public void Play(){
         StartCoroutine(LoadSceneAsync(waveScene));
+    }
+
+    public void PlayButtonNoise(){
+        AudioManager.instance.PlayNoise("Button");
     }
 
     // Coroutine to load the scene asynchronously

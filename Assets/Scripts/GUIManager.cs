@@ -24,6 +24,8 @@ public class GUIManager : MonoBehaviour
     public TextMeshProUGUI waveText;
     public GameObject startWaveButton;
     public Image towerHealthBar;
+    public GameObject lostScreen;
+    public GameObject winScreen;
 
     [Header("Colors")]
     public Color weaponSlotSelectedColor;
@@ -64,14 +66,12 @@ public class GUIManager : MonoBehaviour
         towerHealthBar.fillAmount = 1f;
     }
 
-    public void UpdateTowerHealthBar(float _damage)
-    {
-        towerHealthBar.fillAmount -= _damage / 100f;
+    public void PlayButtonNoise(){
+        AudioManager.instance.PlayNoise("Button");
+    }
 
-        if (towerHealthBar.fillAmount <= 0)
-        {
-            GameManager.instance.EndGame();
-        }
+    public void PlayPurchaseNoise(){
+        AudioManager.instance.PlayNoise("Purchase");
     }
 
     // Update the points text display
@@ -84,15 +84,19 @@ public class GUIManager : MonoBehaviour
     public void PointVisual(int point){
         if(point < 0){
             pointsTextUpdate.color = Color.red;
-            pointsTextUpdate.text = "-" + point.ToString();
+            pointsTextUpdate.text =  point.ToString();
         }else if(point >= 0){
             pointsTextUpdate.color = Color.green;
             pointsTextUpdate.text = "+" + point.ToString();
         }
 
-        AudioManager.instance.PlayNoise("Purchase");
+        
 
         pointsTextUpdate.gameObject.GetComponent<Animator>().SetTrigger("Visual");
+    }
+
+    public void Quit(){
+        Application.Quit();
     }
 
     private void CheckAllUIUpdate(int _points)
@@ -144,6 +148,21 @@ public class GUIManager : MonoBehaviour
             GameManager.instance.UpdatePoints(-_tempSlot.cost); // Use SpendPoints method
             PlayerShoot.weapons[_id].level = slots[_id].currentLevel;
             UpdateUpgradeSlots(_id);
+            PlayPurchaseNoise();
+        }
+    }
+
+    public void ResetUpgradeSlots(){
+        foreach(WeaponSlot s in slots){
+            s.currentLevel = 1;
+            for(int i = 0; i < s.upgradeButtons.Length; i++){
+                if(i == 0){
+                    s.upgradeButtons[i].unlocked = true;
+                }else{
+                    s.upgradeButtons[i].unlocked = false;
+                }
+                UpdateUpgradeSlots(i);
+            }
         }
     }
 
@@ -154,20 +173,18 @@ public class GUIManager : MonoBehaviour
             if (temp.unlocked)
             {
                 temp.slot.GetComponent<Image>().color = weaponSlotSelectedColor;
+            }else{
+                temp.slot.GetComponent<Image>().color = weaponSlotDefaultColor;
             }
         }
     }
 
     // Select the item and set it as the active prefab to build
-    private void SelectItem(GameObject itemPrefab)
+    public void SelectItem(GameObject itemPrefab)
     {
         if (brickPlacer != null)
         {
             BrickPlacer2D.buildSelected = itemPrefab;
-        }
-        else
-        {
-            Debug.LogError("BrickPlacer2D not found.");
         }
     }
 }

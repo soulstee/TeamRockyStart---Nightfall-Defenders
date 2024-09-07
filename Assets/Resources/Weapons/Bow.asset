@@ -15,9 +15,9 @@ MonoBehaviour:
   name: Bow
   weaponId: 0
   isUnlocked: 1
-  speed: 8
-  damage: 10
-  fireRate: 0.5
+  speed: 12
+  damage: 5
+  fireRate: 0.75
   level: 1
   projectile: {fileID: 4842892275183878764, guid: 44f578d6189d4d34ab40c17670f65a52, type: 3}
   shoot: {fileID: 8300000, guid: 2e6101c1ae4c63142a1483dee0eb66bd, type: 3}

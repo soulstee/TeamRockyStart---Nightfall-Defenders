@@ -7,7 +7,6 @@ TagManager:
   - Brick
   - Enemy
   - Tower
-  - DestroyProjectile
   - Projectile
   layers:
   - Default

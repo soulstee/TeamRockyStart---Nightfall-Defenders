@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public GridManager2D gridManager;
     public BrickPlacer2D brickPlacer;
     public PlayerShoot shootScript;
+    public Tower towerScript;
     public GUIManager gui;
 
     public static bool waveEnded = true;
@@ -28,7 +29,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Debug.developerConsoleVisible = true;
         gui = GetComponent<GUIManager>();
+        gui.UpdatePointsText();
     }
 
     private void Update(){
@@ -36,8 +39,8 @@ public class GameManager : MonoBehaviour
             GameManager.waveCurrentTime += Time.deltaTime;
         }
 
-        if(Input.GetKeyDown(KeyCode.K)){
-            UpdatePoints(1000);
+        if(Input.GetKeyDown(KeyCode.Space) && waveEnded ==  true){
+            StartWave();
         }
     }
 
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour
     public void StartWave(){
         currentWaveNum++;
         currentWave = waves[currentWaveNum-1];
+        gui.startWaveButton.SetActive(false);
         gui.waveText.text = "Wave " + currentWaveNum;
         spawner.SpawnWave();
         waveEnded = false;
@@ -59,27 +63,56 @@ public class GameManager : MonoBehaviour
     public void EndWave(){
         waveEnded = true;
         waveCurrentTime = 0;
+
+        if(currentWaveNum > maxWaves-1){
+            WinGame();
+        }
+
+
         gui.waveText.text = "Preparation Phase";
-        if(currentWaveNum <= maxWaves){
+        if(currentWaveNum <= maxWaves-1){
             gui.startWaveButton.SetActive(true);
-        }else{
-            FinishLevel();
         }
     }
 
-    public void EndGame(){
-        Debug.Log("Lost game.");
+    public void LostGame(){
+        waveEnded = true;
+        gui.lostScreen.SetActive(true);
+        foreach(Enemy e in Spawner.currentEnemies){
+
+            if(e != null)
+                Destroy(e.gameObject);
+        }
     }
 
-    private void FinishLevel(){
-        Debug.Log("Finished level.");
+    private void WinGame(){
+        gui.waveText.text = "You Won!";
+
+        gui.winScreen.SetActive(true);
     }
 
     public void ResetGame(){
+        playerPoints = 100;
+        gui.UpdatePointsText();
         waveEnded = true;
         waveCurrentTime = 0;
+        if(Spawner.currentEnemies != null)
+        foreach(Enemy e in Spawner.currentEnemies){
+
+            if(e != null)
+                Destroy(e.gameObject);
+        }
+
+        foreach(GameObject proj in PlayerShoot.projectiles){
+            Destroy(proj);
+        }
+        brickPlacer.Reset();
         gui.waveText.text = "Preparation Phase";
         currentWaveNum = 0;
+        towerScript.ResetHealth();
+        shootScript.ResetWeapon();
+        gui.ResetUpgradeSlots();
+        gui.startWaveButton.SetActive(true);
     }
 
     public void ChangeToBuildMode(){
