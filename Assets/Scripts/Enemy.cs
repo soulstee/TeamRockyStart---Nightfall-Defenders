@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
         }else if(type == TypeOfEnemy.Ghost && rSound == 0){
 
         }else if(type == TypeOfEnemy.Zombie && rSound == 0){
-            AudioManager.instance.PlayNoise("ZombieHit");
+            
         }
     }
 

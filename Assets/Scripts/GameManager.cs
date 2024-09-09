@@ -68,7 +68,6 @@ public class GameManager : MonoBehaviour
             WinGame();
         }
 
-
         gui.waveText.text = "Preparation Phase";
         if(currentWaveNum <= maxWaves-1){
             gui.startWaveButton.SetActive(true);
@@ -96,13 +95,11 @@ public class GameManager : MonoBehaviour
         gui.UpdatePointsText();
         waveEnded = true;
         waveCurrentTime = 0;
-        if(Spawner.currentEnemies != null)
-        foreach(Enemy e in Spawner.currentEnemies){
-
-            if(e != null)
-                Destroy(e.gameObject);
+        currentWave = waves[0];
+        for(int i = 0; i < Spawner.currentEnemies.Count; i++){
+            Debug.Log(Spawner.currentEnemies[i].gameObject.name);
+            Destroy(Spawner.currentEnemies[i].gameObject);
         }
-
         foreach(GameObject proj in PlayerShoot.projectiles){
             Destroy(proj);
         }
@@ -113,6 +110,7 @@ public class GameManager : MonoBehaviour
         shootScript.ResetWeapon();
         gui.ResetUpgradeSlots();
         gui.startWaveButton.SetActive(true);
+        Spawner.currentEnemies = new List<Enemy>();
     }
 
     public void ChangeToBuildMode(){

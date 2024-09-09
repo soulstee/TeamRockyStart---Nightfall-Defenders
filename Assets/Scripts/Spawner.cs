@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
 
     public GameObject[] enemyPrefab;
     [HideInInspector]
-    public static Enemy[] currentEnemies;
+    public static List<Enemy> currentEnemies = new List<Enemy>(); 
 
     private int[] enemiesToSpawn = new int[3];
     private int totalEnemiesSpawned;
@@ -26,7 +26,6 @@ public class Spawner : MonoBehaviour
     }
 
     public void SpawnWave(){
-        currentEnemies = new Enemy[GameManager.currentWave.totalEnemies];
         spawnInterval = GameManager.currentWave.spawnInterval;
     }
 
@@ -42,9 +41,8 @@ public class Spawner : MonoBehaviour
 
             GameObject enemySpawn = Instantiate(enemyPrefab[randomEnemyType], randPos, Quaternion.identity);
             // Match type with prefab
-            Enemy.TypeOfEnemy en = (Enemy.TypeOfEnemy)randomEnemyType;
+            currentEnemies.Add(enemySpawn.GetComponent<Enemy>());
             enemySpawn.GetComponent<Enemy>().Initialize(FindTarget(randPos), this);
-            currentEnemies[currentEnemyCount] = enemySpawn.GetComponent<Enemy>();
 
             // Add to number after adding to array
             currentEnemyCount++;
