@@ -19,4 +19,14 @@ public class Weapon : ScriptableObject
     private void Start(){
         level = 1;
     }
+
+    [Header("Level 2")]
+    public float damageLVL2;
+    public float speedLVL2;
+    public float fireRateLVL2;
+
+    [Header("Level 3")]
+    public float damageLVL3;
+    public float speedLVL3;
+    public float fireRateLVL3;
 }

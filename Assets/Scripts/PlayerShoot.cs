@@ -8,6 +8,10 @@ public class PlayerShoot : MonoBehaviour
 
     public static Weapon currentWeapon;
 
+    private static float currentDamage;
+    private static float currentSpeed;
+    public static float currentFireRate;
+
     public Transform firePoint;
 
     public Animator animator;
@@ -51,13 +55,30 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    public void UpdateWeapon(){
+        if(currentWeapon.level == 1){
+            currentDamage = currentWeapon.damage;
+            currentFireRate = currentWeapon.fireRate;
+            currentSpeed = currentWeapon.speed;
+        }else if(currentWeapon.level == 2){
+            currentDamage = currentWeapon.damageLVL2;
+            currentFireRate = currentWeapon.fireRateLVL2;
+            currentSpeed = currentWeapon.speedLVL2;
+        }else if(currentWeapon.level == 3){
+            currentDamage = currentWeapon.damageLVL3;
+            currentFireRate = currentWeapon.fireRateLVL3;
+            currentSpeed = currentWeapon.speedLVL3;
+        }
+    }
+
     public void ChangeWeapon(int _id){
         if(weapons[_id].isUnlocked){
             currentWeapon = weapons[_id];
             GameManager.instance.gui.UpdateWeaponSlot(_id);
             animator.SetInteger("CurrentWeapon", _id+1);
+            UpdateWeapon();
         }else{
-            //Show locked something
+            
         }
     }
 
@@ -66,6 +87,8 @@ public class PlayerShoot : MonoBehaviour
             animator.SetTrigger("Fire");
             
             AudioManager.instance.PlaySetNoise(currentWeapon.shoot);
+
+
             GameObject proj = Instantiate(currentWeapon.projectile, firePoint.transform.position, Quaternion.identity);
             projectiles.Add(proj);
             Vector2 dir = (mousePos-(Vector2)firePoint.transform.position).normalized;
@@ -74,10 +97,10 @@ public class PlayerShoot : MonoBehaviour
             proj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
             if(proj.GetComponent<Projectile>() != null){
-                proj.GetComponent<Projectile>().Initialize(currentWeapon.damage*currentWeapon.level, currentWeapon.speed*currentWeapon.level, dir);
+                proj.GetComponent<Projectile>().Initialize(currentDamage, currentSpeed, dir);
             }
             else if(proj.GetComponent<HolyWaterProjectile>() != null){
-                proj.GetComponent<HolyWaterProjectile>().Initialize(currentWeapon.damage*currentWeapon.level, currentWeapon.speed*currentWeapon.level, dir);
+                proj.GetComponent<HolyWaterProjectile>().Initialize(currentDamage, currentSpeed, dir);
             }
         }
     }

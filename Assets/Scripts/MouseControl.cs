@@ -40,7 +40,7 @@ public class MouseController : MonoBehaviour
 
                     if(mousePosition.y > -0.8){
                         playerShoot.Shoot(mousePosition);
-                        nextFireTime = Time.time + PlayerShoot.currentWeapon.fireRate;
+                        nextFireTime = Time.time + PlayerShoot.currentFireRate;
                     }
 
                     break;
