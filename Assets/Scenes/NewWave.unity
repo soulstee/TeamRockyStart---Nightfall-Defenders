@@ -1160,6 +1160,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3738279898231797744, guid: a515080af747f7d4199646295f625b56, type: 3}
+      propertyPath: slots.Array.data[0].upgradeButtons.Array.data[1].unlocked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3738279898231797744, guid: a515080af747f7d4199646295f625b56, type: 3}
+      propertyPath: slots.Array.data[0].upgradeButtons.Array.data[2].unlocked
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4330689560273176423, guid: a515080af747f7d4199646295f625b56, type: 3}
       propertyPath: m_Type
       value: 0

@@ -21,3 +21,9 @@ MonoBehaviour:
   level: 1
   projectile: {fileID: 4842892275183878764, guid: 036cdcf6e8ec3ec4f816c76d72ffa893, type: 3}
   shoot: {fileID: 8300000, guid: 2e6101c1ae4c63142a1483dee0eb66bd, type: 3}
+  damageLVL2: 5
+  speedLVL2: 12
+  fireRateLVL2: 1
+  damageLVL3: 7
+  speedLVL3: 15
+  fireRateLVL3: 1

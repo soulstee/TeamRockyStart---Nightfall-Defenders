@@ -147,6 +147,7 @@ public class GUIManager : MonoBehaviour
             _tempSlot.unlocked = true;
             GameManager.instance.UpdatePoints(-_tempSlot.cost); // Use SpendPoints method
             PlayerShoot.weapons[_id].level = slots[_id].currentLevel;
+            GameManager.instance.shootScript.UpdateWeapon();
             UpdateUpgradeSlots(_id);
             PlayPurchaseNoise();
         }
@@ -162,6 +163,7 @@ public class GUIManager : MonoBehaviour
                     s.upgradeButtons[i].unlocked = false;
                 }
                 UpdateUpgradeSlots(i);
+                GameManager.instance.shootScript.UpdateWeapon();
             }
         }
     }

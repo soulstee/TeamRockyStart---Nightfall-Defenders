@@ -44,6 +44,10 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
+        if(Input.GetKeyDown(KeyCode.K)){
+            GameManager.instance.UpdatePoints(3000);
+        }
+
         if(Input.GetKeyDown(KeyCode.Tab) && MouseController.mouseMode == MouseController.MouseMode.Default){
             int temp = currentWeapon.weaponId + 1;
 
@@ -82,26 +86,39 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    public Vector2 thing;
+
     public void Shoot(Vector2 mousePos){
         if(firePoint != null){
             animator.SetTrigger("Fire");
             
             AudioManager.instance.PlaySetNoise(currentWeapon.shoot);
 
+                GameObject proj = Instantiate(currentWeapon.projectile, firePoint.transform.position, Quaternion.identity);
+                projectiles.Add(proj);
+                Vector2 dir = (mousePos-(Vector2)firePoint.transform.position).normalized;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                proj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-            GameObject proj = Instantiate(currentWeapon.projectile, firePoint.transform.position, Quaternion.identity);
-            projectiles.Add(proj);
-            Vector2 dir = (mousePos-(Vector2)firePoint.transform.position).normalized;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-            proj.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
-            if(proj.GetComponent<Projectile>() != null){
-                proj.GetComponent<Projectile>().Initialize(currentDamage, currentSpeed, dir);
-            }
-            else if(proj.GetComponent<HolyWaterProjectile>() != null){
-                proj.GetComponent<HolyWaterProjectile>().Initialize(currentDamage, currentSpeed, dir);
-            }
+                if(proj.GetComponent<Projectile>() != null){
+                    proj.GetComponent<Projectile>().Initialize(currentDamage, currentSpeed, dir);
+                }
+                else if(proj.GetComponent<HolyWaterProjectile>() != null){
+                    proj.GetComponent<HolyWaterProjectile>().Initialize(currentDamage, currentSpeed, dir);
+                }
         }
+    }
+
+    public static Vector2 rotate(Vector2 v, float delta) {
+        return new Vector2(
+            v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+            v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+        );
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, thing);
     }
 }
